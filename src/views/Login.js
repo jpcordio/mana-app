@@ -1,11 +1,11 @@
-import Access from "../components/Access";
+import LoginAction from "../components/LoginAction";
 
 function Login() {
   return (
     <div className="login">
 
 
-      <h1>Login</h1>
+      <LoginAction />
 
       
 
