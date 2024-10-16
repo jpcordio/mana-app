@@ -5,7 +5,8 @@ function Navbar() {
     <div className="navbar">
         <nav>
             <Link to="/">Home</Link> |
-            <Link to="/login">Login</Link>
+            <Link to="/login">Login</Link> |
+            <Link to="/create-account">Create Account</Link>
         </nav>        
     </div>
   );

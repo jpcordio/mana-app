@@ -1,12 +1,13 @@
 import axios from "axios";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 function LoginAction(props) {
 
   //var [response, setResponse] = "";  
-  var [emailAddress, setEmailAddress] = useState('joaopaulo.customer@mana.com');
-  var [password, setPassword] = useState('12345678');
-  var [inputType, setInputType] = useState('password');
+  var [emailAddress, setEmailAddress] = useState('');
+  var [password, setPassword] = useState('');
+  var [inputType, setInputType] = useState('');
+  var [loginMessage, setLoginMessage] = useState('');  // Move useState for loginMessage here
 
 
   //////////////////////////////////// Handle the fields ////////////////////////////////////
@@ -62,9 +63,28 @@ function LoginAction(props) {
     }
   }
 
+  //////////////////////////////////// Handles the Log In message from the Account Creation ////////////////////////////////////
+  useEffect(() => {
+    // Executa a lógica após a página carregar
+    const params = new URLSearchParams(window.location.search);
+    const success = params.get('account_confirmation_success');
+    
+    if (success) {  // Only show message if the param exists
+      // Operador ternário para definir a mensagem
+      const message = success === 'true' ? 
+        "Account confirmation was successful!" : 
+        "Account confirmation failed.";
+      
+      setLoginMessage(message);
+    }
+  }, []);
+
   return (
     <div className="">
 
+      {/* Show the loginMessage only if it is not empty */}
+      {loginMessage && <p>{loginMessage}</p>}
+      
       <hr />
 
       <label for="email">Email</label><br></br>
