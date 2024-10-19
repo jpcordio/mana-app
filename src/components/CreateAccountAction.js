@@ -6,7 +6,7 @@ function CreateAccountAction(props) {
   var [emailAddress, setEmailAddress] = useState('');
 
   var [password, setPassword] = useState('');
-  var [inputType, setInputType] = useState('');
+  var [inputType, setInputType] = useState('password');
 
   var [name, setName] = useState('');
   var [nickname, setNickname] = useState('');

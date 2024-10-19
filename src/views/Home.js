@@ -1,3 +1,4 @@
+import Access from "../components/Access";
 import ArticlesList from "../components/ArticlesList";
 
 function Home() {
@@ -7,6 +8,7 @@ function Home() {
       <h1>Home</h1>
 
         <ArticlesList />
+        {/* <Access /> */}
 
     </div>
   );

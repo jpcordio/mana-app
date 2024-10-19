@@ -1,17 +1,16 @@
-import axios from "axios";
 import { useState, useEffect } from "react";
+import { login } from "../services/Authentication.service";
 
 function LoginAction(props) {
 
   //var [response, setResponse] = "";  
   var [emailAddress, setEmailAddress] = useState('');
   var [password, setPassword] = useState('');
-  var [inputType, setInputType] = useState('');
-  var [loginMessage, setLoginMessage] = useState('');  // Move useState for loginMessage here
-
-
+  var [inputType, setInputType] = useState('password');
+  var [loginMessage, setLoginMessage] = useState('');  
+  var [resetPwdMessage, setResetMessage] = useState('');
+  
   //////////////////////////////////// Handle the fields ////////////////////////////////////
-
   function handleEmail(e) {
     e.preventDefault();
     setEmailAddress(e.target.value);
@@ -33,25 +32,12 @@ function LoginAction(props) {
 
   //////////////////////////////////// Handles the Log In ////////////////////////////////////
   async function handleLogIn(e) {
-    e.preventDefault();
+    e.preventDefault();    
 
     try {
-      const response = await axios.post('http://localhost:3000/api/auth/sign_in', {
-      email: emailAddress,
-      password: password
-    });
+      await login(emailAddress, password);
 
-    // Access to the headers
-    const headers = response.headers;
-    console.log("Headers: ", headers); 
-
-    const accessToken = response.headers['access-token'];
-    console.log("Access Token:", accessToken);
-    const client = response.headers['client'];
-    console.log("Client:", client);
-    
-    // comment it when the project is finished
-    alert('Login is working!');
+      window.location.href="/"
 
   } catch (error) {
     if (error.response) {
@@ -67,16 +53,25 @@ function LoginAction(props) {
   useEffect(() => {
     // Executa a lógica após a página carregar
     const params = new URLSearchParams(window.location.search);
-    const success = params.get('account_confirmation_success');
+    const accountConfirmationMessage = params.get('account_confirmation_success');
+    const resetPasswordMessage = params.get('password_reset_success');
     
-    if (success) {  // Only show message if the param exists
-      // Operador ternário para definir a mensagem
-      const message = success === 'true' ? 
+    if (accountConfirmationMessage) { 
+      const confirmationMessage = accountConfirmationMessage === 'true' ? 
         "Account confirmation was successful!" : 
         "Account confirmation failed.";
       
-      setLoginMessage(message);
+      setLoginMessage(confirmationMessage);
     }
+
+    if (resetPasswordMessage) {  
+      const resetMessage = resetPasswordMessage === 'true' ? 
+        "Your password has been successfully updated." : 
+        "Password change failed!";
+      
+        setResetMessage(resetMessage);
+    }   
+
   }, []);
 
   return (
@@ -84,6 +79,9 @@ function LoginAction(props) {
 
       {/* Show the loginMessage only if it is not empty */}
       {loginMessage && <p>{loginMessage}</p>}
+
+      {/* Show the loginMessage only if it is not empty */}
+      {resetPwdMessage && <p>{resetPwdMessage}</p>}
       
       <hr />
 
@@ -100,7 +98,7 @@ function LoginAction(props) {
 
 
       <a href="/forgot-password">Forget Password</a> <br />
-      <a href="/resend-confirmation">Reset Password</a><br />
+      <a href="/resend-confirmation">Resend Confirmation Email</a><br />
 
       <hr />
 

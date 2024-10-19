@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useState } from "react";
+import Logout from "./Logout";
 
 function Access(props) { 
   var [response, setResponse] = "";  
@@ -551,8 +552,10 @@ async function handleResetPassword(e) {
       <button onClick={handleUpdatePassword}>Update Password</button> <br /> 
       <button onClick={handleForgetPassword}>Forget Password</button> <br />
       <button onClick={handleResetPassword}>Reset Password (need to run forget before)</button> <br /> <br />
-      
-      
+
+      <h4>Jon</h4>
+      <Logout />
+      <br /> <br />
     </div>
   );
 }

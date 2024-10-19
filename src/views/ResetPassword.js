@@ -1,13 +1,12 @@
-import Access from "../components/Access";
+import ResetPasswordAction from "../components/ResetPasswordAction";
 
 function ResetPassword() {
   return (
     <div className="resetpassword">
+      
+      <h1>Reset Password</h1>
 
-
-      <h1>Login</h1>
-
-      <Access />
+        <ResetPasswordAction />
 
     </div>
   );
