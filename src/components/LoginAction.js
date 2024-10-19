@@ -45,7 +45,7 @@ function LoginAction(props) {
     } else {
         console.error("Unknown Erro:", error.message);
     }
-      alert('Error to login.');
+      alert(error.response.data.errors[0]);
     }
   }
 
@@ -99,6 +99,7 @@ function LoginAction(props) {
 
       <a href="/forgot-password">Forget Password</a> <br />
       <a href="/resend-confirmation">Resend Confirmation Email</a><br />
+      <a href="/create-account">Sign In</a><br />
 
       <hr />
 

@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { isLogged } from "../services/Authentication.service";
+import { isLogged, logout } from "../services/Authentication.service";
+import { deleteUser } from "../services/User.service";
 
 function AccountAction(props) { 
 
@@ -170,31 +171,25 @@ function AccountAction(props) {
     e.preventDefault();
 
     try {
-      const response = await axios.delete('http://localhost:3000/api/auth', {
-        params: {
-          'access-token': accessToken,
-          uid: emailAddress,
-          client: client
-        }
-      });
-      
-      console.log(response.data); 
-      alert('Usuário deletado com sucesso!'); 
+
+      const response = await deleteUser(accessToken, emailAddress, client);
+
+      alert(response);
+
+      window.location.href = "/login";
   
     } catch (error) {
       if (error.response) {
-        // O servidor retornou uma resposta de erro (status 4xx ou 5xx)
-        console.error("Erro ao deletar o usuário:", error.response.data);
-        alert('Erro ao deletar o usuário.'); 
+        // Erro (status 4xx ou 5xx)
+        console.error("Erro to delete the user:", error.response.data);
       } else if (error.request) {
-        // A requisição foi feita, mas não houve resposta do servidor
-        console.error("Nenhuma resposta recebida:", error.request);
-        alert('Nenhuma resposta do servidor.');
+          // No reply from the server
+          console.error("No response:", error.request);
       } else {
-        // Outro tipo de erro aconteceu ao configurar a requisição
-        console.error("Erro desconhecido:", error.message);
-        alert('Erro ao deletar o token.');
+          // Something else happened
+          console.error("Unknown error:", error.message);
       }
+      alert('Erro while deleting the user.');
     }
   }
 

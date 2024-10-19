@@ -25,7 +25,7 @@ export async function login(emailAddress, password) {
     if (error.response) {
       console.error("Erro on the request:", error.response.data);
     } else {
-        console.error("Unknown Erro:", error.message);
+      console.error("Unknown Erro:", error.message);
     }
     throw error;
   }

@@ -18,7 +18,7 @@ function Logout(props) {
       } else {
         console.error("Erro desconhecido:", error.message);
       }
-
+      alert(error.response.data.errors[0]);
     }  
   }
 

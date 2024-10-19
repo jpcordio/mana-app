@@ -1,5 +1,5 @@
-import axios from "axios";
 import { useState } from "react";
+import { createUser } from "../services/User.service";
 
 function CreateAccountAction(props) { 
 
@@ -69,42 +69,27 @@ function CreateAccountAction(props) {
   ///////////////////////////////////// Handles the Registration of a new user ////////////////////////////////////
   async function handleRegister(e) {
     e.preventDefault();
+
     try {
-      const response = await axios.post('http://localhost:3000/api/auth', {
-        email: emailAddress,
-        password: password,
-        password_confirmation: confirmPassword,
-        name: name,
-        role: typeRegistration
-      });
 
-      // Acess to the headers
-      const headers = response.headers;
-      console.log("Headers da resposta:", headers); 
+      await createUser(emailAddress, password, confirmPassword, name, typeRegistration);
 
-      const accessToken = response.headers['access-token'];
-      console.log("Access Token:", accessToken);
-
-      const client = response.headers['client'];
-      console.log("Client Token:", client);
-      
-      alert('Usuario registrado com sucesso!');
+      window.location.href="/login"
 
     } catch (error) {
       if (error.response) {
-        console.error("Erro na requisição:", error.response.data);
+        console.error("Erro on the request:", error.response.data);
       } else {
-        console.error("Erro desconhecido:", error.message);
+        console.error("Unknown Erro:", error.message);
       }
 
-      alert('Erro ao registrar novo usuario.');
+      alert('Erro while registering the new user.');
     }
   }
 
   
-  ///////////////////////////////////////////////////////////////////////////////////////////
-  ///////////////////////////////////// Form for testing ////////////////////////////////////
-  ///////////////////////////////////////////////////////////////////////////////////////////
+
+  ///////////////////////////////////// Form ////////////////////////////////////
   return (
     <div className="">
 
