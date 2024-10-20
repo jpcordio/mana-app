@@ -1,5 +1,5 @@
-import axios from "axios";
 import { useState } from "react";
+import { forgetPassword } from "../services/Authentication.service";
 
 function ForgotPasswordAction(props) { 
   
@@ -25,22 +25,25 @@ function ForgotPasswordAction(props) {
   /////////////
   async function handleForgetPassword(e) {
     e.preventDefault();
+
     try {
-      const response = await axios.post('http://localhost:3000/api/auth/password', {
-        email: emailAddress
-      });
-      
-      alert('Email sent to' + { emailAddress } + '!');
+
+        const response = await forgetPassword(emailAddress);
+              
+        alert(response);
+
+        window.location.href = "/login";
 
     } catch (error) {
       if (error.response) {
-        console.error("Erro na requisição:", error.response.data);
+        console.error("Error on the request:", error.response.data);
       } else {
-        console.error("Erro desconhecido:", error.message);
+        console.error("Unknown Erro:", error.message);
       }
 
-      alert('Erro ao registrar novo usuario.');
+      alert('Error to request a new password.');
     }
+
   }
 
   ///////////////////////////////////// Form  ////////////////////////////////////
