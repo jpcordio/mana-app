@@ -112,8 +112,8 @@ function CreateAccountAction(props) {
       <label for="name">Name</label><br></br>
       <input type='text' id="name" name="name" value={name} onChange={handleName} required /> <br></br>
       
-      <label for="Nickname">Nickname</label><br></br>
-      <input type='text' id="nickname" name="nickname" value={nickname} onChange={handleNickname} /> <br></br>
+      {/* <label for="Nickname">Nickname</label><br></br>
+      <input type='text' id="nickname" name="nickname" value={nickname} onChange={handleNickname} /> <br></br> */}
 
       <p>Are you:</p>
       <input

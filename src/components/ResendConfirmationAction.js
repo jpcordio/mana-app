@@ -1,5 +1,5 @@
-import axios from "axios";
 import { useState } from "react";
+import { resendVerificationEmail } from "../services/Email.service";
 
 function ResendConfirmationAction(props) { 
 
@@ -17,11 +17,8 @@ function ResendConfirmationAction(props) {
     async function handleResend(e) {
         e.preventDefault();
         try {
-            const response = await axios.post('http://localhost:3000/api/auth/confirmation', {
-            email: emailAddress
-            });
             
-            alert('Email enviado com sucesso!');
+          await resendVerificationEmail(emailAddress);
 
         } catch (error) {
             if (error.response) {
@@ -29,7 +26,6 @@ function ResendConfirmationAction(props) {
             } else {
             console.error("Erro desconhecido:", error.message);
             }
-
             alert('Erro ao enviar email.');
         }
     }

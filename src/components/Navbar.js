@@ -5,14 +5,15 @@ function Navbar() {
   return (
     <div className="navbar">
         <nav>
-            <Link to="/">Home</Link> |            
-            {/* <Link to="/create-account">Create Account</Link> |
-            <Link to="/forgot-password">Forgot Password</Link> |
+            <Link to="/">Home</Link> |          
+            {/* <Link to="/forgot-password">Forgot Password</Link> |
             <Link to="/reset-password">Reset Password</Link> |
-            <Link to="/resend-confirmation">Resend Confirmation</Link> | */}
-            { isLogged() && <Link to="/account">Account |</Link> }
-            { isLogged() && <Link to="/logout">Logout |</Link> }
-            { !isLogged() && <Link to="/login">Login</Link> }
+            <Link to="/resend-confirmation">Resend Confirmation</Link> |     */}
+            { isLogged() && <Link to="/account"> Account | </Link> }
+            { isLogged() && <Link to="/logout"> Logout | </Link> }
+            { !isLogged() && <Link to="/login"> Login | </Link> }
+            { !isLogged() && <Link to="/create-account"> Create Account | </Link> }
+            
         </nav>        
     </div>
   );
