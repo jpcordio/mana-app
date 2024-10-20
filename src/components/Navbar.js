@@ -11,8 +11,8 @@ function Navbar() {
             <Link to="/reset-password">Reset Password</Link> |
             <Link to="/resend-confirmation">Resend Confirmation</Link> | */}
             { isLogged() && <Link to="/account">Account |</Link> }
-            <Link to="/logout">Logout</Link> |
-            <Link to="/login">Login</Link> |
+            { isLogged() && <Link to="/logout">Logout |</Link> }
+            { !isLogged() && <Link to="/login">Login</Link> }
         </nav>        
     </div>
   );

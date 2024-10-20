@@ -11,15 +11,18 @@ export async function login(emailAddress, password) {
 
   // // Access to the headers
   //const headers = response.headers;
-  // console.log("Headers: ", headers); 
+  //console.log("Headers: ", headers); 
+  
+  const name = response.data.data.name ?? '';
+  const nickname = response.data.data.nickname ?? '';
   const accessToken = response.headers['access-token'];
-  // console.log("Access Token:", accessToken);
   const client = response.headers['client'];
-  // console.log("Client:", client);
 
   localStorage.setItem("accessToken", accessToken);
   localStorage.setItem("client", client);
   localStorage.setItem("uid", emailAddress);
+  localStorage.setItem("name", name);
+  localStorage.setItem("nickname", nickname);
 
 } catch (error) {  
     if (error.response) {
@@ -105,53 +108,105 @@ export function isLogged(){
 
 }
 
+///////////////////////////////////// Update Password ////////////////////////////////////
+export async function updatePassword(currentPassword, newPassword, confirmPassword) {
+
+  const accessToken = localStorage.getItem("accessToken");
+  const client = localStorage.getItem("client");
+  const uid = localStorage.getItem("uid");
+
+  try {
+    // Enviar a requisição de atualização (PUT)
+    const response = await axios.put('http://localhost:3000/api/auth', {
+      current_password: currentPassword,
+      password: newPassword,
+      password_confirmation: confirmPassword
+    }, {
+      headers: {
+        'access-token': accessToken,
+        uid: uid,
+        client: client
+      }
+    });
+
+    // Acessar os headers da resposta, que podem conter novos tokens
+    const headers = response.headers;
+    console.log("Headers:", headers); 
+
+    const newAccessToken = response.headers['access-token'];
+    localStorage.setItem("accessToken", newAccessToken);
+    
+    const newClient = response.headers['client'];
+    localStorage.setItem("client", newClient);
+
+    //return response.data.status;
+
+  } catch (error) {
+    if (error.response) {
+      // Erro na resposta da API
+      //console.error("Erro na requisição:", error.response.data);
+      console.error("Erro na requisição detalhes:", error.response.data.errors.full_messages[0]);
+      
+      return error.response.data.errors.full_messages[0];
+
+    } else {
+      // Erro desconhecido
+      
+      console.error("Erro desconhecido:", error.message);
+    }
+    
+    throw error;
+  }
+}
+
+
+///////////////////////////////////// /Reset Password are part of the same process ////////////////////////////////////
+
 ///////////////////////////////////// Forget Password ////////////////////////////////////
 
-  //this one will send an email, on this email will have a link that clicking will give an URL such as:
-  // http://localhost:3001/reset-password?access-token=G3ReIzm6tv_qrQSGV05EIw&client=qDTOBpDQs-u-46J5KWXRZA&client_id=qDTOBpDQs-u-46J5KWXRZA&config=default&expiry=1730319371&reset_password=true&token=G3ReIzm6tv_qrQSGV05EIw&uid=nath.customer%40mana.com
-  // from this url we need the following to handle the password change:
-  // access-token=G3ReIzm6tv_qrQSGV05EIw
-  // client=qDTOBpDQs-u-46J5KWXRZA
-  // token=G3ReIzm6tv_qrQSGV05EIw
-  // uid = email adddress
-  export async function forgetPassword(emailAddress) {
+//this one will send an email, on this email will have a link that clicking will give an URL such as:
+// http://localhost:3001/reset-password?access-token=G3ReIzm6tv_qrQSGV05EIw&client=qDTOBpDQs-u-46J5KWXRZA&client_id=qDTOBpDQs-u-46J5KWXRZA&config=default&expiry=1730319371&reset_password=true&token=G3ReIzm6tv_qrQSGV05EIw&uid=nath.customer%40mana.com
+// from this url we need the following to handle the password change:
+// access-token=G3ReIzm6tv_qrQSGV05EIw
+// client=qDTOBpDQs-u-46J5KWXRZA
+// token=G3ReIzm6tv_qrQSGV05EIw
+// uid = email adddress
+export async function forgetPassword(emailAddress) {
+  
+  const uid = emailAddress;
+
+  try {
+      const response = await axios.post('http://localhost:3000/api/auth/password', {
+        email: uid
+      });
     
-    const uid = emailAddress;
+    return response.data.message;  
 
-    try {
-        const response = await axios.post('http://localhost:3000/api/auth/password', {
-          email: uid
-        });
-      
-      return response.data.message;  
+  } catch (error) { 
 
-    } catch (error) { 
-
-      if (error.response) {
-        console.error("Error on the request:", error.response.data);
-      } else {
-        console.error("Unknown Erro:", error.message);
-      }
-
-      alert(error.response.data.errors[0]);
-      //return response.data.message; 
-      throw error;
+    if (error.response) {
+      console.error("Error on the request:", error.response.data);
+    } else {
+      console.error("Unknown Erro:", error.message);
     }
-  }
 
+    alert(error.response.data.errors[0]);
+    //return response.data.message; 
+    throw error;
+  }
+}
 
 ///////////////////////////////////// Password reset ////////////////////////////////////
 
-// on this process, we will need:  
-// access-token, client, token, uid (email adddress)
+// on this process, we will need: access-token, client, token, uid (email adddress)
 // Those are generated by a link sent via email using the handleForgetPassword
 export async function resetPassword(password, confirmPassword, accessToken, uid, client, token) {  
   
   try {
     // Enviar a requisição de atualização (PUT)
     const response = await axios.put('http://localhost:3000/api/auth/password', {
-        password: password, //this should be a new password value
-      	password_confirmation: confirmPassword //this should be a confirmation of the new password value
+        password: password, 
+      	password_confirmation: confirmPassword 
     }, {
       headers: {
         'access-token': accessToken,

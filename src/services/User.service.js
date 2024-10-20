@@ -1,6 +1,6 @@
 import axios from "axios";
 
-///////////////////////////////////// Handles the Registration of a new user ////////////////////////////////////
+///////////////////////////////////// Registration of a new user ////////////////////////////////////
 export async function createUser(emailAddress, password, confirmPassword, name, typeRegistration) {
 
     try {
@@ -22,7 +22,7 @@ export async function createUser(emailAddress, password, confirmPassword, name, 
     }
 }
 
-///////////////////////////////////// Handles the Delete of an User ////////////////////////////////////
+///////////////////////////////////// Delete User ////////////////////////////////////
 export async function deleteUser() {
 
     const accessToken = localStorage.getItem("accessToken");
@@ -64,3 +64,40 @@ export async function deleteUser() {
         throw error;
     }
 }
+
+///////////////////////////////////// Handles the Update of an User ////////////////////////////////////
+export async function updateUser(name, nickname) {
+
+    const accessToken = localStorage.getItem("accessToken");
+    const client = localStorage.getItem("client");
+    const uid = localStorage.getItem("uid");
+
+    try {
+        // Enviar a requisição de atualização (PUT)
+        const response = await axios.put('http://localhost:3000/api/auth', {
+        name: name,
+        nickname: nickname
+        },{
+        headers: {
+            'access-token': accessToken,
+            uid: uid,
+            client: client
+        }
+    });
+
+    localStorage.setItem("name", name);
+    localStorage.setItem("nickname", nickname);
+
+    alert('Usuário atualizado com sucesso!');
+
+    } catch (error) {
+        if (error.response) {
+        // Erro na resposta da API
+        console.error("Erro na requisição:", error.response.data);
+        } else {
+        // Erro desconhecido
+        console.error("Erro desconhecido:", error.message);
+        }
+        alert('Erro ao atualizar o usuário.');
+    }
+  }

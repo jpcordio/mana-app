@@ -1,10 +1,11 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { isLogged, logout } from "../services/Authentication.service";
-import { deleteUser } from "../services/User.service";
+import { isLogged, updatePassword } from "../services/Authentication.service";
+import { deleteUser, updateUser } from "../services/User.service";
 
 function AccountAction(props) { 
 
+  //////////////////////////////////// Variables ////////////////////////////////////
   var [emailAddress, setEmailAddress] = useState(localStorage.getItem("uid"));
 
   var [currentPassword, setCurrentPassword] = useState('');
@@ -16,21 +17,24 @@ function AccountAction(props) {
   var [confirmPassword, setConfirmPassword] = useState('');
   var [inputTypeConfirmPassword, setInputTypeConfirmPassword] = useState('password')
 
-  var [name, setName] = useState('');
-  var [nickname, setNickname] = useState('');
+  var [name, setName] = useState(localStorage.getItem("name"));
+  var [nickname, setNickname] = useState(localStorage.getItem("nickname"));
 
-  var [isLoggedIn, setIsLoggedIn] = useState(false);
+  var [accessToken, setAccessToken] = localStorage.getItem("accessToken");
+  var [client, setClient] = localStorage.getItem("client");
 
+  //////////////////////////////////// Set Functions ////////////////////////////////////
+  // handle Email
   function handleEmail(e) {
     e.preventDefault();
     setEmailAddress(e.target.value);
   }
 
-    // handle password
-    function handleCurrentPassword(e) {
-        e.preventDefault();
-        setCurrentPassword(e.target.value);
-    }
+  // handle current password
+  function handleCurrentPassword(e) {
+      e.preventDefault();
+      setCurrentPassword(e.target.value);
+  }
   
   // handle password
   function handlePassword(e) {
@@ -55,11 +59,6 @@ function AccountAction(props) {
     e.preventDefault();
     setNickname(e.target.value);
   }
-
-  var [accessToken, setAccessToken] = useState('j8k8EhIIZR8t1lr4l-NpEQ');
-  var [client, setClient] = useState('uv6QlbiTjjiB0J6CORh7SA');
-
-
 
   //////////////////////////////////// handle the "show/hide" password and confirm password ////////////////////////////////////
   
@@ -86,29 +85,12 @@ function AccountAction(props) {
     e.preventDefault();
   
     try {
-      // Enviar a requisição de atualização (PUT)
-      const response = await axios.put('http://localhost:3000/api/auth', {
-        name: name,
-        nickname: nickname
-      }, {
-        headers: {
-          'access-token': accessToken,
-          uid: emailAddress,
-          client: client
-        }
-      });
-  
-      // Acessar os headers da resposta, que podem conter novos tokens
-      const headers = response.headers;
-      console.log("Headers da resposta:", headers); 
-  
-      const newAccessToken = response.headers['access-token'];
-      console.log("Novo Access Token:", newAccessToken);
-      
-      const newClient = response.headers['client'];
-      console.log("Novo Client:", newClient);
-      
-      alert('Usuário atualizado com sucesso!');
+
+      const response = await updateUser(name, nickname);
+
+      //alert(response);
+
+      //window.location.href = "/login";
   
     } catch (error) {
       if (error.response) {
@@ -126,32 +108,14 @@ function AccountAction(props) {
   ///////////////////////////////////// Handles the Update Password ////////////////////////////////////
   async function handleUpdatePassword(e) {
     e.preventDefault();
-  
-    try {
-      // Enviar a requisição de atualização (PUT)
-      const response = await axios.put('http://localhost:3000/api/password', {
-        current_password: password,
-        password: password,
-        password_confirmation: password
-      }, {
-        headers: {
-          'access-token': accessToken,
-          uid: emailAddress,
-          client: client
-        }
-      });
-  
-      // Acessar os headers da resposta, que podem conter novos tokens
-      const headers = response.headers;
-      console.log("Headers da resposta:", headers); 
-  
-      const newAccessToken = response.headers['access-token'];
-      console.log("Novo Access Token:", newAccessToken);
       
-      const newClient = response.headers['client'];
-      console.log("Novo Client:", newClient);
+    try {
 
-      alert('Password atualizado com sucesso!');
+      const response = await updatePassword(currentPassword, password, confirmPassword);
+
+      alert(response);
+
+      //window.location.href = "/login";
   
     } catch (error) {
       if (error.response) {
@@ -161,8 +125,6 @@ function AccountAction(props) {
         // Erro desconhecido
         console.error("Erro desconhecido:", error.message);
       }
-  
-      alert('Erro ao atualizar o Password do Usuário.');
     }
   }
 
@@ -218,7 +180,7 @@ function AccountAction(props) {
             
             <label for="Nickname">Nickname</label><br></br>
             <input type='text' id="nickname" name="nickname" value={nickname} onChange={handleNickname} /> <br></br>
-            <br /><br />
+            <br />
 
             <button onClick={handleUpdate}>Update User</button>  <br />
 
@@ -231,7 +193,7 @@ function AccountAction(props) {
             <label for="currentpassword">Current Password</label><br></br>
             <input type={inputTypeCurrentPassword} id="currentpassword" name="currentpassword" value={currentPassword} onChange={handleCurrentPassword} />
             <button onClick={toggleCurrentPasswordVisibility}>
-                {inputType === 'password' ? 'Mostrar Senha' : 'Esconder Senha'}
+                {inputTypeCurrentPassword === 'password' ? 'Mostrar Senha' : 'Esconder Senha'}
             </button><br />
 
             <label for="password">Password</label><br></br>
@@ -260,9 +222,7 @@ function AccountAction(props) {
             <button onClick={handleDelete}>Delete user</button>  <br />
 
         </div>
-           
-        {isLoggedIn && <p>Usuário está logado!</p>}
-      
+                 
     </div>
   );
 }
