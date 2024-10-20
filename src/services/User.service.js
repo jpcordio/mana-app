@@ -100,4 +100,4 @@ export async function updateUser(name, nickname) {
         }
         alert('Erro ao atualizar o usuário.');
     }
-  }
+}

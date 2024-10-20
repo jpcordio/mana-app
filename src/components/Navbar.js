@@ -1,7 +1,19 @@
 import { Link } from "react-router-dom";
-import { isLogged } from "../services/Authentication.service";
+import { isCompany, isLogged } from "../services/Authentication.service";
+//import { useEffect, useState } from "react";
+
+
 
 function Navbar() {
+
+  // const [isCompanyUser, setIsCompanyUser] = useState(false);
+
+  // useEffect (() => {
+  //   setIsCompanyUser(isCompany());
+  // }, []);
+
+  //console.log("local storage role: " + localStorage.getItem("role"));
+
   return (
     <div className="navbar">
         <nav>
@@ -9,6 +21,7 @@ function Navbar() {
             {/* <Link to="/forgot-password">Forgot Password</Link> |
             <Link to="/reset-password">Reset Password</Link> |
             <Link to="/resend-confirmation">Resend Confirmation</Link> |     */}
+            { isCompany() && <Link to="/posts"> Posts | </Link> }
             { isLogged() && <Link to="/account"> Account | </Link> }
             { isLogged() && <Link to="/logout"> Logout | </Link> }
             { !isLogged() && <Link to="/login"> Login | </Link> }

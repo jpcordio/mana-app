@@ -15,6 +15,7 @@ export async function login(emailAddress, password) {
   
   const name = response.data.data.name ?? '';
   const nickname = response.data.data.nickname ?? '';
+  const userType = response.data.data.role;
   const accessToken = response.headers['access-token'];
   const client = response.headers['client'];
 
@@ -23,6 +24,7 @@ export async function login(emailAddress, password) {
   localStorage.setItem("uid", emailAddress);
   localStorage.setItem("name", name);
   localStorage.setItem("nickname", nickname);
+  localStorage.setItem("role", userType);
 
 } catch (error) {  
     if (error.response) {
@@ -57,6 +59,9 @@ export async function logout() {
       localStorage.removeItem("accessToken");
       localStorage.removeItem("client");
       localStorage.removeItem("uid");
+      localStorage.removeItem("name");
+      localStorage.removeItem("nickname");
+      localStorage.removeItem("role");
     }
 
     return data.success;
@@ -105,6 +110,18 @@ export function isLogged(){
   const uid = localStorage.getItem("uid");
 
   return accessToken && client && uid;
+
+}
+
+///////////////////////////////////// Check if User is a Company ////////////////////////////////////
+export function isCompany(){
+
+  const accessToken = localStorage.getItem("accessToken");
+  const client = localStorage.getItem("client");
+  const uid = localStorage.getItem("uid");
+  const userType = localStorage.getItem("role");
+
+  return accessToken && client && uid && userType === "true";
 
 }
 
@@ -158,7 +175,6 @@ export async function updatePassword(currentPassword, newPassword, confirmPasswo
     throw error;
   }
 }
-
 
 ///////////////////////////////////// /Reset Password are part of the same process ////////////////////////////////////
 

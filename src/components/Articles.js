@@ -2,7 +2,7 @@ import { useState } from "react";
 
 function Articles(props) {
 
-  const [moreInfo, setMoreInfo] = useState(false);
+  const [moreInfo, setMoreInfo] = useState(true);
 
   function handleShowLess(e) {
     e.preventDefault();
@@ -19,8 +19,8 @@ function Articles(props) {
     return (
       <div>
         
-        <h4>{props.title}</h4> 
-        <button onClick={handleShowLess}>Show Less</button>
+        <h4>{props.title} <button onClick={handleShowLess}>Show Less</button></h4> 
+        
         <ul>
           <li>
             {props.body}
@@ -33,9 +33,7 @@ function Articles(props) {
 
     return (
       <div>        
-        <h4>{props.title}</h4>
-        <button onClick={handleShowMore}>Show More</button> 
-        
+        <h4>{props.title} <button onClick={handleShowMore}>Show More</button> </h4>
       </div>
     );
   }

@@ -8,6 +8,8 @@ import ResetPassword from "./views/ResetPassword";
 import ResendConfirmation from "./views/ResendConfirmation";
 import Account from "./views/Account";
 import Logout from "./components/Logout";
+import CreateArticle from "./views/CreateArticle";
+import Article from "./views/Article";
 
 function App() {
   return (
@@ -24,6 +26,8 @@ function App() {
           <Route path="resend-confirmation" element={<ResendConfirmation />}></Route>
           <Route path="logout" element={<Logout />}></Route>
           <Route path="account" element={<Account />}></Route>
+          <Route path="posts" element={<Article />}></Route>
+          <Route path="create-post" element={<CreateArticle />}></Route>
         </Routes>
 
       </Router>
