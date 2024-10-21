@@ -32,16 +32,17 @@ function ArticlesList() {
     //     e.preventDefault();
     //     setQuery(e.target.value);
     // }
-
+    
     return (
         <div className="home">
-            {/* <input value={query} onChange={handleSearchQuery} placeholder="Search..." /> */}
+            {/* <input value={query} onChange={handleSearchQuery} placeholder="Search..." /> */}          
             
             <ul>
                 {
                     articles.map((article, index) => (
+                        //console.log(article),
                         <li key={index}> 
-                            <Articles title={article.title} body={article.body}/>
+                            <Articles id={article.id} title={article.title} body={article.body} userId ={article.user.id} />
                             <hr />
                         </li>
                     ))

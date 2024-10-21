@@ -1,18 +1,7 @@
 import { Link } from "react-router-dom";
 import { isCompany, isLogged } from "../services/Authentication.service";
-//import { useEffect, useState } from "react";
-
-
 
 function Navbar() {
-
-  // const [isCompanyUser, setIsCompanyUser] = useState(false);
-
-  // useEffect (() => {
-  //   setIsCompanyUser(isCompany());
-  // }, []);
-
-  //console.log("local storage role: " + localStorage.getItem("role"));
 
   return (
     <div className="navbar">

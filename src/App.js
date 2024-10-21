@@ -10,6 +10,7 @@ import Account from "./views/Account";
 import Logout from "./components/Logout";
 import CreateArticle from "./views/CreateArticle";
 import Article from "./views/Article";
+import EditArticle from "./views/EditArticle";
 
 function App() {
   return (
@@ -28,6 +29,8 @@ function App() {
           <Route path="account" element={<Account />}></Route>
           <Route path="posts" element={<Article />}></Route>
           <Route path="create-post" element={<CreateArticle />}></Route>
+          <Route path="edit-post" element={<EditArticle />}></Route>
+          {/* <Route path="delete-post" element={<DeleteArticle />}></Route> */}
         </Routes>
 
       </Router>

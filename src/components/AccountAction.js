@@ -172,13 +172,13 @@ function AccountAction(props) {
 
             <h4>Personal Data</h4>
 
-            <label for="email">Email</label><br></br>
+            <label htmlFor="email">Email</label><br></br>
             <input type="text" id="email" name="email" value={emailAddress} onChange={handleEmail} /><br></br>
 
-            <label for="name">Name</label><br></br>
+            <label htmlFor="name">Name</label><br></br>
             <input type='text' id="name" name="name" value={name} onChange={handleName} /> <br></br>
             
-            <label for="Nickname">Nickname</label><br></br>
+            <label htmlFor="Nickname">Nickname</label><br></br>
             <input type='text' id="nickname" name="nickname" value={nickname} onChange={handleNickname} /> <br></br>
             <br />
 
@@ -190,19 +190,19 @@ function AccountAction(props) {
 
             <h4>Change Password</h4>
 
-            <label for="currentpassword">Current Password</label><br></br>
+            <label htmlFor="currentpassword">Current Password</label><br></br>
             <input type={inputTypeCurrentPassword} id="currentpassword" name="currentpassword" value={currentPassword} onChange={handleCurrentPassword} />
             <button onClick={toggleCurrentPasswordVisibility}>
                 {inputTypeCurrentPassword === 'password' ? 'Mostrar Senha' : 'Esconder Senha'}
             </button><br />
 
-            <label for="password">Password</label><br></br>
+            <label htmlFor="password">Password</label><br></br>
             <input type={inputType} id="password" name="password" value={password} onChange={handlePassword} />
             <button onClick={togglePasswordVisibility}>
                 {inputType === 'password' ? 'Mostrar Senha' : 'Esconder Senha'}
             </button><br />
 
-            <label for="confirmPassword">Confirm Password</label><br></br>
+            <label htmlFor="confirmPassword">Confirm Password</label><br></br>
             <input type={inputTypeConfirmPassword} id="confirmPassword" name="confirmPassword" value={confirmPassword} onChange={handleConfirmPassword} />
             <button onClick={toggleConfirmPasswordVisibility}>
                 {inputTypeConfirmPassword === 'password' ? 'Mostrar Senha' : 'Esconder Senha'}
@@ -213,7 +213,7 @@ function AccountAction(props) {
         </div>
       
 
-        <div class="deleteaccount" style={{ backgroundcolor: 'light-red'}}>
+        <div className="deleteaccount" style={{ backgroundcolor: 'light-red'}}>
 
             <h4>Delete Account</h4>
 
