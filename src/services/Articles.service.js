@@ -1,44 +1,5 @@
 import axios from "axios";
 
-///////////////////////////////////// Load all Article ////////////////////////////////////
-export async function fetchArticles() {
-
-    try {
-        const response = await axios.get('http://localhost:3000/api/articles');
-        return response.data;
-    } catch (error) {
-        console.error("Erro ao buscar artigos:", error);
-        throw error;
-    }
-}
-
-///////////////////////////////////// Load Article per ID ////////////////////////////////////
-export async function fetchArticleId(articleId) {
-
-    const accessToken = localStorage.getItem("accessToken");
-    const client = localStorage.getItem("client");
-    const uid = localStorage.getItem("uid");
-
-    try {
-        
-        const response = await axios.get(`http://localhost:3000/api/articles/${articleId}`,
-        {
-            headers: {
-            'access-token': accessToken,
-            uid: uid,
-            client: client
-            }    
-        });
-    
-        return response;
-            
-    
-    } catch (error) {
-        console.error("Erro ao buscar artigo:", error);
-        throw error;
-    }
-}
-
 ///////////////////////////////////// Create Article Article ////////////////////////////////////
 export async function createArticle(title, body, imageUrl) {
 
@@ -120,11 +81,9 @@ export async function deleteArticle(articleId) {
                 uid: uid,
                 client: client
             }
-        });
-    
+        });    
        
-        return response.data.message;      
-        
+        return response.data.message;
 
     } catch (error) {
         if (error.response) {
@@ -138,5 +97,69 @@ export async function deleteArticle(articleId) {
             console.error("Unknown error:", error.message);
         }
         throw error;
+    }
+}
+
+///////////////////////////////////// Load all Article ////////////////////////////////////
+export async function fetchArticles() {
+
+    try {
+        const response = await axios.get('http://localhost:3000/api/articles');
+        return response.data;
+    } catch (error) {
+        console.error("Erro ao buscar artigos:", error);
+        throw error;
+    }
+}
+
+///////////////////////////////////// Load Article per ID ////////////////////////////////////
+export async function fetchArticleId(articleId) {
+
+    const accessToken = localStorage.getItem("accessToken");
+    const client = localStorage.getItem("client");
+    const uid = localStorage.getItem("uid");
+
+    try {
+        
+        const response = await axios.get(`http://localhost:3000/api/articles/${articleId}`,
+        {
+            headers: {
+            'access-token': accessToken,
+            uid: uid,
+            client: client
+            }    
+        });
+    
+        return response;
+            
+    
+    } catch (error) {
+        console.error("Erro ao buscar artigo:", error);
+        throw error;
+    }
+}
+
+///////////////////////////////////// Load Article per User ID ////////////////////////////////////
+export async function fetchArticlesUserId() {
+
+    const accessToken = localStorage.getItem("accessToken");
+    const client = localStorage.getItem("client");
+    const uid = localStorage.getItem("uid");
+
+    try {
+      const response = await axios.get(`http://localhost:3000/api/articles/user/15`,
+      {
+          headers: {
+          'access-token': accessToken,
+          uid: uid,
+          client: client
+          }    
+      });
+
+      return response;
+
+    } catch (error) {
+      console.error("Error when trying to get posts: ", error);
+      throw error;
     }
 }

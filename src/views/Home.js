@@ -1,5 +1,3 @@
-import ArticlesList from "../components/ArticlesList";
-
 function Home() {
   return (
     <div className="Home">
@@ -13,9 +11,6 @@ function Home() {
         <p>Sed est risus, cursus ac lacus at, porttitor hendrerit lorem. Integer porta risus eros, vitae efficitur eros tincidunt quis. Vestibulum ut dictum quam, ac lobortis quam. Nulla sit amet justo consectetur, malesuada mauris sollicitudin, vulputate lectus. Ut a magna in mauris consequat aliquam. Fusce vel odio lacinia, maximus eros quis, finibus libero. Proin eget ante eget justo posuere egestas. Ut in malesuada nisi. Sed eu euismod sapien, nec vehicula risus. Praesent laoreet, diam ac accumsan rhoncus, erat enim auctor est, ut luctus magna augue non velit. Donec arcu enim, scelerisque ac consequat vitae, luctus vitae dui. Duis orci libero, varius vel vestibulum et, varius vitae urna. Quisque egestas quam nec condimentum pulvinar. Aliquam hendrerit bibendum scelerisque.
         </p>
         <hr />
-
-        <ArticlesList />
-
     </div>
   );
 }

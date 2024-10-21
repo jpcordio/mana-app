@@ -66,9 +66,9 @@ function Articles(props) {
     return (
       <div>        
         <h4>
+
           {props.title} 
-          <button onClick={handleShowMore}>Show More</button> 
-          
+          <button onClick={handleShowMore}>Show More</button>           
           { isCompany() && (
             <div>
               <Link to={`/edit-post?articleId=${props.id}&userId=${props.userId}`}>
@@ -76,7 +76,8 @@ function Articles(props) {
               </Link>    
               <button onClick={handleDeleteArticle}>Delete</button>   
             </div>
-          )}          
+          )} 
+         
         </h4>
       </div>
     );

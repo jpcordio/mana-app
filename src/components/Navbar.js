@@ -15,7 +15,9 @@ function Navbar() {
             { isLogged() && <Link to="/logout"> Logout | </Link> }
             { !isLogged() && <Link to="/login"> Login | </Link> }
             { !isLogged() && <Link to="/create-account"> Create Account | </Link> }
-            
+            {isLogged() && "Welcome " + localStorage.getItem("name") + "!"} 
+            {isCompany() && isLogged() && " (Business Profile)" } 
+            {!isCompany() && isLogged() && " (Customer Profile)"}
         </nav>        
     </div>
   );

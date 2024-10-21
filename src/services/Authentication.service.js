@@ -16,6 +16,7 @@ export async function login(emailAddress, password) {
   const name = response.data.data.name ?? '';
   const nickname = response.data.data.nickname ?? '';
   const userType = response.data.data.role;
+  const userId = response.data.data.id;
   const accessToken = response.headers['access-token'];
   const client = response.headers['client'];
 
@@ -25,6 +26,7 @@ export async function login(emailAddress, password) {
   localStorage.setItem("name", name);
   localStorage.setItem("nickname", nickname);
   localStorage.setItem("role", userType);
+  localStorage.setItem("userId", userId);
 
 } catch (error) {  
     if (error.response) {
@@ -62,6 +64,7 @@ export async function logout() {
       localStorage.removeItem("name");
       localStorage.removeItem("nickname");
       localStorage.removeItem("role");
+      localStorage.removeItem("userId");
     }
 
     return data.success;
