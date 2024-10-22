@@ -12,6 +12,7 @@ function Navbar() {
             <Link to="/resend-confirmation">Resend Confirmation</Link> |     */}
             { isCompany() && <Link to="/posts"> Posts | </Link> }
             { isLogged() && <Link to="/account"> Account | </Link> }
+            { isLogged() && <Link to="/company"> Companies | </Link> }
             { isLogged() && <Link to="/logout"> Logout | </Link> }
             { !isLogged() && <Link to="/login"> Login | </Link> }
             { !isLogged() && <Link to="/create-account"> Create Account | </Link> }
