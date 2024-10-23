@@ -1,36 +1,33 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
-import Companies from "./Companies";
+import Companies from "./Companies"; // Importação correta
 import { isLogged } from "../services/Authentication.service";
-import { isFollowing } from "../services/Connection.service";
 
-function CompanyList({ user_Id }) {
+function AllCompanyList({ user_Id }) {
   const [companies, setCompanies] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const accessToken = localStorage.getItem("accessToken");
   const client = localStorage.getItem("client");
   const uid = localStorage.getItem("uid");
-  const userId = localStorage.getItem("userId");;
 
   ///////////////////////////////////// Check Validation ////////////////////////////////////
-  useEffect(()=>{
-      if(!isLogged()){
-          window.location.href = "/login";
-      }
+  useEffect(() => {
+    if (!isLogged()) {
+      window.location.href = "/login";
+    }
   });
 
   useEffect(() => {
     async function fetchCompanies() {
       try {
-        const response = await axios.get(`http://localhost:3000/api/all_companies`,
-            {
-                headers: {
-                'access-token': accessToken,
-                uid: uid,
-                client: client
-                }    
-            });
+        const response = await axios.get(`http://localhost:3000/api/all_companies`, {
+          headers: {
+            "access-token": accessToken,
+            uid: uid,
+            client: client,
+          },
+        });
         if (response.data.length > 0) {
           setCompanies(response.data);
         } else {
@@ -47,7 +44,6 @@ function CompanyList({ user_Id }) {
   }, [user_Id]);
 
   if (loading) {
-    
     return <p>Carregando...</p>;
   }
 
@@ -56,20 +52,17 @@ function CompanyList({ user_Id }) {
   }
 
   return (
-    <div className="">            
-        <ul>
-            {
-                companies.map((company, index) => (
-                    // console.log(company),
-                    <li key={index}> 
-                        <Companies id={company.id} name={company.name} email={company.email} />
-                        <hr />
-                    </li>
-                ))
-            }
-        </ul>
+    <div className="">
+      <ul>
+        {companies.map((company, index) => (
+          <li key={index}>
+            <Companies id={company.id} name={company.name} email={company.email} />
+            <hr />
+          </li>
+        ))}
+      </ul>
     </div>
-);
+  );
 }
 
-export default CompanyList;
+export default AllCompanyList;

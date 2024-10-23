@@ -1,47 +1,45 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { isFollowing, setFollow, setUnfollow } from "../services/Connection.service";
 
 function Companies(props) {
   const [isFollowed, setIsFollowed] = useState(false);
-  const [moreInfo, setMoreInfo] = useState(true);
 
   useEffect(() => {
-    const checkIfFollowed = async () => {
-      const followed = await isFollowing(props.id);
-      setIsFollowed(followed);
-    };
+    // Verificar se a empresa está sendo seguida ao montar o componente
+    async function checkIfFollowed() {
+      const result = await isFollowing(props.id);
+      setIsFollowed(result);
+    }
 
     checkIfFollowed();
   }, [props.id]);
 
-  const handleFollow = async () => {
-    console.log("You are now following this company.");
-    setFollow(props.id);
-    setIsFollowed(true); 
-  };
-
-  const handleUnfollow = async () => {
-    console.log("You are now unfollowing this company.");
-    setUnfollow(props.id);
-    setIsFollowed(false); 
-  };
-
-  if (moreInfo) {
-    return (
-      <div>
-        <h4>
-          {props.name + " (" + props.id + ") " + props.email}
-          {isFollowed ? (
-            <button onClick={handleUnfollow}>Unfollow</button>
-          ) : (
-            <button onClick={handleFollow}>Follow</button>
-          )}
-        </h4>
-      </div>
-    );
+  // Função para seguir a empresa
+  async function handleFollow() {
+    await setFollow(props.id);
+    setIsFollowed(true); // Atualizar estado
+    window.location.reload(); // Recarrega a página
   }
 
-  return null; 
+  // Função para deixar de seguir a empresa
+  async function handleUnfollow() {
+    await setUnfollow(props.id);
+    setIsFollowed(false); // Atualizar estado
+    window.location.reload(); // Recarrega a página
+  }
+
+  return (
+    <div>
+      <h4>
+        {props.name + " (" + props.id + ") " + props.email}
+        {isFollowed ? (
+          <button onClick={handleUnfollow}>Unfollow</button>
+        ) : (
+          <button onClick={handleFollow}>Follow</button>
+        )}
+      </h4>
+    </div>
+  );
 }
 
 export default Companies;

@@ -12,6 +12,7 @@ import CreateArticle from "./views/CreateArticle";
 import Article from "./views/Article";
 import EditArticle from "./views/EditArticle";
 import Company from "./views/Company";
+import Profile from "./views/Profile";
 
 function App() {
   return (
@@ -32,6 +33,7 @@ function App() {
           <Route path="create-post" element={<CreateArticle />}></Route>
           <Route path="edit-post" element={<EditArticle />}></Route>
           <Route path="company" element={<Company />}></Route>
+          <Route path="profile" element={<Profile />}></Route>
           {/* <Route path="delete-post" element={<DeleteArticle />}></Route> */}
         </Routes>
 
