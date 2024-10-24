@@ -20,6 +20,6 @@ export async function getCompanyProfile(id){
         return  response.data
     
     } catch (err) {
-        throw new Error("This company didn't fill out their profile yet.");
+      throw false;
     }    
 }

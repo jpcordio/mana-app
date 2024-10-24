@@ -1,4 +1,6 @@
 import axios from "axios";
+import { getCompanyProfile } from "./Profile.service";
+import { useEffect } from "react";
 
 //////////////////////////////////// Handles the Log In ////////////////////////////////////
 export async function login(emailAddress, password) {
@@ -9,10 +11,6 @@ export async function login(emailAddress, password) {
     password: password
   });
 
-  // // Access to the headers
-  //const headers = response.headers;
-  //console.log("Headers: ", headers); 
-  
   const name = response.data.data.name ?? '';
   const nickname = response.data.data.nickname ?? '';
   const userType = response.data.data.role;
@@ -20,13 +18,63 @@ export async function login(emailAddress, password) {
   const accessToken = response.headers['access-token'];
   const client = response.headers['client'];
 
+  console.log(userType);
+
   localStorage.setItem("accessToken", accessToken);
   localStorage.setItem("client", client);
   localStorage.setItem("uid", emailAddress);
+
+  // User table data
   localStorage.setItem("name", name);
   localStorage.setItem("nickname", nickname);
   localStorage.setItem("role", userType);
   localStorage.setItem("userId", userId);
+
+  if(userType === true){
+    
+      async function fetchProfile() {
+        try {
+          const data = await getCompanyProfile(userId); 
+
+          const address1 = data.address1 ?? '';
+          localStorage.setItem("address1", address1);
+
+          const address2 = data.address2 ?? '';
+          localStorage.setItem("address2", address2);
+
+          const city = data.city ?? '';
+          localStorage.setItem("city", city);
+
+          const county = data.county ?? '';
+          localStorage.setItem("county", county);
+
+          const postcode = data.postcode ?? '';
+          localStorage.setItem("postcode", postcode);
+
+          const country = data.country ?? '';
+          localStorage.setItem("country", country);
+          
+          const phone = data.phone ?? '';
+          localStorage.setItem("phone", phone);
+          
+          const mobile = data.mobile ?? '';
+          localStorage.setItem("mobile", mobile);
+          
+          const website = data.website ?? '';
+          localStorage.setItem("website", website);
+          
+          const emailProfile = data.email ?? '';
+          localStorage.setItem("emailProfile", emailProfile);
+          
+        } catch (err) {
+          console.log('error to retrive profile information')
+        } 
+      }
+      fetchProfile();
+    
+  }else{
+    //window.alert("nao eh uma company - nao fazer query!")    
+  }
 
 } catch (error) {  
     if (error.response) {
@@ -65,6 +113,17 @@ export async function logout() {
       localStorage.removeItem("nickname");
       localStorage.removeItem("role");
       localStorage.removeItem("userId");
+
+      localStorage.removeItem("address1");
+      localStorage.removeItem("address2");
+      localStorage.removeItem("city");
+      localStorage.removeItem("county");
+      localStorage.removeItem("postcode");
+      localStorage.removeItem("country");
+      localStorage.removeItem("phone");
+      localStorage.removeItem("mobile");
+      localStorage.removeItem("website");
+      localStorage.removeItem("emailProfile");
     }
 
     return data.success;

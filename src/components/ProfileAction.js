@@ -37,9 +37,10 @@ function ProfileAction() {
         <div>
           <h2>{name}</h2>
           <p>Address: {profile.address1}, {profile.address2}</p>
-          <p>City: {profile.city}, {profile.county}</p>
+          <p>City: {profile.city}, County: {profile.county}</p>
+          <p>Country: {profile.country}, Postcode: {profile.postcode}</p>
           <p>Phone: {profile.phone}, Mobile: {profile.mobile}</p>
-          <p>Website: {profile.website}</p>
+          <p>Website: <a target="_blank" href={profile.website}>{profile.website}</a></p>
           <p>Email: {profile.email}</p>
 
           <hr />
@@ -48,7 +49,8 @@ function ProfileAction() {
 
         </div>
       ) : (
-        <p>No profile found.</p>
+        <p>No profile found. <br /><a href="/company">Back</a> <br /></p>
+        
       )}
     </div>
   );
