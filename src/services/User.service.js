@@ -1,5 +1,7 @@
 import axios from "axios";
 
+const API_URL = 'http://localhost:3000/api';
+
 ///////////////////////////////////// Registration of a new user ////////////////////////////////////
 export async function createUser(emailAddress, password, confirmPassword, name, typeRegistration) {
 
@@ -11,6 +13,8 @@ export async function createUser(emailAddress, password, confirmPassword, name, 
         name: name,
         role: typeRegistration
         });
+
+        return response.data.message;
 
     } catch (error) {
         if (error.response) {
@@ -86,9 +90,9 @@ export async function updateUser(name, nickname) {
     });
 
     localStorage.setItem("name", name);
-    localStorage.setItem("nickname", nickname);
-
+    localStorage.setItem("nickname", nickname);    
     alert('Usuário atualizado com sucesso!');
+    return response.data.message;       
 
     } catch (error) {
         if (error.response) {
@@ -100,4 +104,4 @@ export async function updateUser(name, nickname) {
         }
         alert('Erro ao atualizar o usuário.');
     }
-}
+}   

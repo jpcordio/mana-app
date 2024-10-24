@@ -52,7 +52,6 @@ export async function setFollow(id) {
     }
 }
 
-
 ///////////////////////////////////// Unfollow a company ////////////////////////////////////
 export async function setUnfollow(id) {
     const accessToken = localStorage.getItem("accessToken");

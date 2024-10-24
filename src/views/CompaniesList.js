@@ -1,10 +1,9 @@
 import { useEffect } from "react";
 import AllCompanyList from "../components/AllCompanyList";
-import FollowedCompanyList from "../components/FollowedCompanyList"; // Certifique-se que está exportado corretamente
 import { isCompany, isLogged } from "../services/Authentication.service";
 
 
-function Company() {
+function CompaniesList() {
 
     ///////////////////////////////////// Check Validation ////////////////////////////////////
     useEffect(() => {
@@ -15,14 +14,11 @@ function Company() {
 
   return (
     <div className="App">
-      <h1>Followed Companies</h1>
-      <a href="/companies-list">Find More Companies</a> <br />
-      <FollowedCompanyList />
-      
-      {/* <h1>All Companies</h1> */}
-      {/* <AllCompanyList /> */}
+      <h1>All Companies</h1>
+      <AllCompanyList />
+      <a href="/company">Back</a> <br />
     </div>
   );
 }
 
-export default Company;
+export default CompaniesList;

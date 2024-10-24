@@ -1,4 +1,3 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { isLogged, updatePassword } from "../services/Authentication.service";
 import { deleteUser, updateUser } from "../services/User.service";
@@ -162,7 +161,7 @@ function AccountAction(props) {
     }
   });
 
-  ///////////////////////////////////// Form for testing ////////////////////////////////////
+  ///////////////////////////////////// Form ////////////////////////////////////
   return (
     <div className="">
 
