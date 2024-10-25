@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { isCompany, isLogged, updatePassword } from "../services/Authentication.service";
 import { deleteUser, updateUser } from "../services/User.service";
+import { getCompanyProfile, updateProfile } from "../services/Profile.service";
 
 function AccountAction(props) { 
 
@@ -18,11 +19,12 @@ function AccountAction(props) {
 
   // Variables to update User Table
   var [name, setName] = useState(localStorage.getItem("name"));
-  var [nickname, setNickname] = useState(localStorage.getItem("nickname"));
+  //var [nickname, setNickname] = useState(localStorage.getItem("nickname"));
 
   // Variables to validate login
-  var [accessToken, setAccessToken] = localStorage.getItem("accessToken");
-  var [client, setClient] = localStorage.getItem("client");
+  let accessToken = localStorage.getItem("accessToken");
+  let client = localStorage.getItem("client");
+  let id = localStorage.getItem("userId");
 
   // Variables to Profile
   var [address1, setAddress1] = useState(localStorage.getItem("address1") || "");
@@ -68,10 +70,10 @@ function AccountAction(props) {
   }
 
   // handle nickname
-  function handleNickname(e) {
-    e.preventDefault();
-    setNickname(e.target.value);
-  }
+  // function handleNickname(e) {
+  //   e.preventDefault();
+  //   setNickname(e.target.value);
+  // }
 
   // handle address1
   function handleAddress1(e) {
@@ -159,9 +161,11 @@ function AccountAction(props) {
   
     try {
 
-      const response = await updateUser(name, nickname);
+      const response = await updateUser(name);
 
-      //alert(response);
+      if(response){
+        console.log("user updated.")
+      }
 
       //window.location.href = "/login";
   
@@ -228,12 +232,91 @@ function AccountAction(props) {
     }
   }
 
-  ///////////////////////////////////// Check Validation ////////////////////////////////////
+  ///////////////////////////////////// Check Validation + Get Profile data ////////////////////////////////////
   useEffect(()=>{
     if(!isLogged()){
       window.location.href = "/login";
     }
-  });
+  
+    async function callProfile() {
+      try {
+        const data = await getCompanyProfile(id);
+  
+        if (data) {
+            
+          // Atribuindo valores aos estados e localStorage
+          setAddress1(data.address1 ?? '');
+          setAddress2(data.address2 ?? '');
+          setCity(data.city ?? '');
+          setCounty(data.county ?? '');
+          setPostcode(data.postcode ?? '');
+          setCountry(data.country ?? '');
+          setPhone(data.phone ?? '');
+          setMobile(data.mobile ?? '');
+          setWebsite(data.website ?? '');
+          setEmailProfile(data.email ?? '');
+        } 
+      } catch (error) {
+        if (error.response) {
+          console.error("Erro retrive profile data:", error.response.data);
+        } else if (error.request) {
+          console.error("No response:", error.request);
+        } else {
+          console.error("Unknown error:", error.message);
+        }
+
+        setAddress1('');
+        setAddress2('');
+        setCity('');
+        setCounty('');
+        setPostcode('');
+        setCountry('');
+        setPhone('');
+        setMobile('');
+        setWebsite('');
+        setEmailProfile('');
+       
+      }
+    }
+  
+    callProfile();
+  
+  }, [id]);
+
+    ///////////////////////////////////// Handles the Profile Update ////////////////////////////////////
+    async function handleProfileUpdate(e) {
+      e.preventDefault();
+  
+      try {
+  
+        const response = await updateProfile(id, 
+          address1, 
+          address2, 
+          city, 
+          county, 
+          postcode, 
+          country, 
+          phone, 
+          mobile, 
+          website, 
+          emailProfile);
+
+          console.error("Profile updated succefuly! " + response);
+    
+      } catch (error) {
+        if (error.response) {
+          // Erro (status 4xx ou 5xx)
+          console.error("Erro to update the profile:", error.response.data);
+        } else if (error.request) {
+            // No reply from the server
+            console.error("No response:", error.request);
+        } else {
+            // Something else happened
+            console.error("Unknown error:", error.message);
+        }
+        alert('Erro while updating the profile.');
+      }
+    }
 
   ///////////////////////////////////// Form ////////////////////////////////////
   return (
@@ -296,9 +379,9 @@ function AccountAction(props) {
               <label htmlFor="emailprofile">Email</label><br></br>
               <input type="email" id="emailprofile" name="emailprofile" value={emailProfile} onChange={handleEmailProfile} /><br></br>
                             
-                            
               <br />
-              <button>Update Profile</button>  <br />
+              <button onClick={handleProfileUpdate}>Update Profile</button>  
+              <br />
 
             </div>
             )          
@@ -338,7 +421,7 @@ function AccountAction(props) {
             <p>Once you delete your account, there is no going back, pleae be certain.</p>
 
             <button onClick={handleDelete}>Delete user</button>  <br />
-
+            <br />
         </div>
                  
     </div>
