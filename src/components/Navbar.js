@@ -9,7 +9,12 @@ function Navbar() {
 
             <Link to="/">Home</Link> |          
 
-            { isCompany() && <Link to="/posts"> Posts | </Link> }
+            { isCompany() ? (
+                <Link to="/posts"> Posts | </Link>
+            ) : (
+                <Link to="/posts-feed"> Posts | </Link>
+            ) }
+
             { isLogged() && <Link to="/account"> Account | </Link> }
             { (!isCompany() && isLogged()) && <Link to="/company"> Companies | </Link> }
 

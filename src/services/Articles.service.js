@@ -21,6 +21,8 @@ export async function createArticle(title, body, imageUrl) {
         }
     });
 
+    console.log(response);
+
     return true;
 
     } catch (error) {
@@ -139,27 +141,29 @@ export async function fetchArticleId(articleId) {
     }
 }
 
-///////////////////////////////////// Load Article per User ID ////////////////////////////////////
-export async function fetchArticlesUserId() {
+///////////////////////////////////// Load Article from Companies that Users Follow ////////////////////////////////////
+export async function fetchArticleFeed() {
 
     const accessToken = localStorage.getItem("accessToken");
     const client = localStorage.getItem("client");
     const uid = localStorage.getItem("uid");
 
     try {
-      const response = await axios.get(`http://localhost:3000/api/articles/user/15`,
-      {
-          headers: {
-          'access-token': accessToken,
-          uid: uid,
-          client: client
-          }    
-      });
-
-      return response;
-
+        
+        const response = await axios.get(`http://localhost:3000/api/articles/followed`,
+        {
+            headers: {
+            'access-token': accessToken,
+            uid: uid,
+            client: client
+            }    
+        });
+    
+        return response;
+            
+    
     } catch (error) {
-      console.error("Error when trying to get posts: ", error);
-      throw error;
+        console.error("Error to load articles:", error);
+        throw error;
     }
 }

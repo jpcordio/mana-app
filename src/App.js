@@ -14,6 +14,7 @@ import EditArticle from "./views/EditArticle";
 import Company from "./views/Company";
 import Profile from "./views/Profile";
 import CompaniesList from "./views/CompaniesList";
+import ArticleFeed from "./views/ArticleFeed";
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
           <Route path="logout" element={<Logout />}></Route>
           <Route path="account" element={<Account />}></Route>
           <Route path="posts" element={<Article />}></Route>
+          <Route path="posts-feed" element={<ArticleFeed />}></Route>
           <Route path="create-post" element={<CreateArticle />}></Route>
           <Route path="edit-post" element={<EditArticle />}></Route>
           <Route path="company" element={<Company />}></Route>

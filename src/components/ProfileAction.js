@@ -28,10 +28,10 @@ function ProfileAction() {
   if (loading) {
     return <p>Loading...</p>;
   }
-  if (error) {
-    //return {error}
-    return <p>This company didn't fill their profile yet. <br /><a href="/company">Back</a> <br /></p>;
-  }
+  // if (error) {
+  //   //return {error}
+  //   return <p>This company didn't fill their profile yet. <br /><a href="/company">Back</a> <br /></p>;
+  // }
 
   return (
     <div className="">
@@ -42,20 +42,20 @@ function ProfileAction() {
           <p>City: {profile.city}, County: {profile.county}</p>
           <p>Country: {profile.country}, Postcode: {profile.postcode}</p>
           <p>Phone: {profile.phone}, Mobile: {profile.mobile}</p>
-          <p>Website: <a target="_blank" href={profile.website}>{profile.website}</a></p>
-          <p>Email: {profile.email}</p>
-
-          <hr />
-
-          <h2>Posts</h2>
-
-          <ArticleList />
+          <p>Website: <a target="_blank" href={profile.website} rel="noopener noreferrer">{profile.website}</a></p>
+          <p>Email: {profile.email}</p>          
 
         </div>
       ) : (
         <p>No profile found. <br /><a href="/company">Back</a> <br /></p>
         
       )}
+
+      <hr />
+
+      <h2>Posts</h2>
+
+      <ArticleList user_Id={id} />
     </div>
   );
 }

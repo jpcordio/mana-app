@@ -31,9 +31,8 @@ function Companies(props) {
   return (
     <div>
       <h4>
-        <a href={`http://localhost:3001/profile?id=${props.id}&name=${props.name}`}>{props.name}</a>
-        {/* <Route path={`/profile/:${props.id}`} element={<ProfileAction />} /> */}
-        {" (" + props.id + ") - " + props.email}
+        <a href={`http://localhost:3001/profile?id=${props.id}&name=${props.name}`}>{props.name}</a> - 
+         {" " + props.email + " "}
         {isFollowed ? (
           <button onClick={handleUnfollow}>Unfollow</button>
         ) : (

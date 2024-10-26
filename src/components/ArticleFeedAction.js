@@ -2,8 +2,9 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import Articles from "./Articles";
 import { isLogged } from "../services/Authentication.service";
+import { fetchArticleFeed } from "../services/Articles.service";
 
-function ArticleList({ user_Id }) {
+function ArticleFeedAction({ user_Id }) {
   const [articles, setArticles] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -23,17 +24,10 @@ function ArticleList({ user_Id }) {
     async function fetchArticles() {
 
       // Check if there is a value for user_Id (that value is from ProfileAction otherwise will consider the ID from Local Storage)
-      const idToFetch = user_Id || userId;
-
+      
       try {
-        const response = await axios.get(`http://localhost:3000/api/articles/user/${idToFetch}`,
-            {
-                headers: {
-                'access-token': accessToken,
-                uid: uid,
-                client: client
-                }    
-            });
+        const response = await fetchArticleFeed();
+            
         if (response.data.length > 0) {
           setArticles(response.data);
         } else {
@@ -75,4 +69,4 @@ function ArticleList({ user_Id }) {
 );
 }
 
-export default ArticleList;
+export default ArticleFeedAction;
