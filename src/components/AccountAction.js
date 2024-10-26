@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { isCompany, isLogged, updatePassword } from "../services/Authentication.service";
 import { deleteUser, updateUser } from "../services/User.service";
-import { getCompanyProfile, updateProfile } from "../services/Profile.service";
+import { createProfile, getCompanyProfile, updateProfile } from "../services/Profile.service";
 
 function AccountAction(props) { 
 
@@ -25,6 +25,7 @@ function AccountAction(props) {
   let accessToken = localStorage.getItem("accessToken");
   let client = localStorage.getItem("client");
   let id = localStorage.getItem("userId");
+  const [haveProfile, setHaveProfile] = useState(false);
 
   // Variables to Profile
   var [address1, setAddress1] = useState(localStorage.getItem("address1") || "");
@@ -74,6 +75,13 @@ function AccountAction(props) {
   //   e.preventDefault();
   //   setNickname(e.target.value);
   // }
+
+  // handle haveProfile
+  function handleHaveProfile(e) {
+    e.preventDefault();
+    setHaveProfile(e.target.value);
+  }
+
 
   // handle address1
   function handleAddress1(e) {
@@ -237,49 +245,50 @@ function AccountAction(props) {
     if(!isLogged()){
       window.location.href = "/login";
     }
-  
-    async function callProfile() {
-      try {
-        const data = await getCompanyProfile(id);
-  
-        if (data) {
-            
-          // Atribuindo valores aos estados e localStorage
-          setAddress1(data.address1 ?? '');
-          setAddress2(data.address2 ?? '');
-          setCity(data.city ?? '');
-          setCounty(data.county ?? '');
-          setPostcode(data.postcode ?? '');
-          setCountry(data.country ?? '');
-          setPhone(data.phone ?? '');
-          setMobile(data.mobile ?? '');
-          setWebsite(data.website ?? '');
-          setEmailProfile(data.email ?? '');
-        } 
-      } catch (error) {
-        if (error.response) {
-          console.error("Erro retrive profile data:", error.response.data);
-        } else if (error.request) {
-          console.error("No response:", error.request);
-        } else {
-          console.error("Unknown error:", error.message);
-        }
+    
+    if(isCompany()){
+      async function callProfile() {
+        try {
+          const data = await getCompanyProfile(id);
+    
+          if (data) {
+              
+            // Atribuindo valores aos estados e localStorage
+            setAddress1(data.address1 ?? '');
+            setAddress2(data.address2 ?? '');
+            setCity(data.city ?? '');
+            setCounty(data.county ?? '');
+            setPostcode(data.postcode ?? '');
+            setCountry(data.country ?? '');
+            setPhone(data.phone ?? '');
+            setMobile(data.mobile ?? '');
+            setWebsite(data.website ?? '');
+            setEmailProfile(data.email ?? '');            
+          } 
+        } catch (error) {
+          if (error.response) {
+            console.error("Erro retrive profile data:", error.response.data);
+          } else if (error.request) {
+            console.error("No response:", error.request);
+          } else {
+            console.error("Unknown error:", error.message);
+          }
 
-        setAddress1('');
-        setAddress2('');
-        setCity('');
-        setCounty('');
-        setPostcode('');
-        setCountry('');
-        setPhone('');
-        setMobile('');
-        setWebsite('');
-        setEmailProfile('');
-       
-      }
+          setAddress1('');
+          setAddress2('');
+          setCity('');
+          setCounty('');
+          setPostcode('');
+          setCountry('');
+          setPhone('');
+          setMobile('');
+          setWebsite('');
+          setEmailProfile('');
+        
+        }
+      }  
+      callProfile();
     }
-  
-    callProfile();
   
   }, [id]);
 
@@ -317,6 +326,49 @@ function AccountAction(props) {
         alert('Erro while updating the profile.');
       }
     }
+
+  ///////////////////////////////////// Handles the Save Profile ////////////////////////////////////
+  async function handleProfileCreate(e) {
+    e.preventDefault();
+  
+    try {
+
+      const response = await createProfile(id, 
+        address1, 
+        address2, 
+        city, 
+        county, 
+        postcode, 
+        country, 
+        phone, 
+        mobile, 
+        website, 
+        emailProfile);
+      
+       if(response){
+        console.log("profile created.")
+        setHaveProfile(true);
+        console.log("haveProfile estado:", haveProfile)
+      }
+
+      //window.location.href = "/login";
+  
+    } catch (error) {
+      if (error.response) {
+        // Erro na resposta da API
+        console.error("Erro on the request:", error.response.data);
+      } else {
+        // Erro desconhecido
+        console.error("Unkown Error:", error.message);
+      }
+  
+      alert('Error when trying to create the profile.');
+    }
+  }
+
+
+
+
 
   ///////////////////////////////////// Form ////////////////////////////////////
   return (
@@ -380,7 +432,16 @@ function AccountAction(props) {
               <input type="email" id="emailprofile" name="emailprofile" value={emailProfile} onChange={handleEmailProfile} /><br></br>
                             
               <br />
-              <button onClick={handleProfileUpdate}>Update Profile</button>  
+              {haveProfile ? (
+                  <div>                      
+                      <button onClick={handleProfileUpdate}>Update Profile</button>
+                  </div>
+              ) : (
+                  <div>                      
+                      <button onClick={handleProfileCreate}>Save</button>
+                  </div>
+              )}
+              
               <br />
 
             </div>

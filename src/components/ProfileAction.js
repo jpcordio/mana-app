@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { getCompanyProfile } from '../services/Profile.service';
+import ArticleList from './ArticlesList';
 
 function ProfileAction() {
   const location = useLocation();
@@ -28,7 +29,8 @@ function ProfileAction() {
     return <p>Loading...</p>;
   }
   if (error) {
-    return <p>{error}</p>;
+    //return {error}
+    return <p>This company didn't fill their profile yet. <br /><a href="/company">Back</a> <br /></p>;
   }
 
   return (
@@ -46,6 +48,8 @@ function ProfileAction() {
           <hr />
 
           <h2>Posts</h2>
+
+          <ArticleList />
 
         </div>
       ) : (

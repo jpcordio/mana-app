@@ -28,6 +28,7 @@ export async function login(emailAddress, password) {
   localStorage.setItem("role", userType);
   localStorage.setItem("userId", userId);
 
+
 } catch (error) {  
     if (error.response) {
       console.error("Erro on the request:", error.response.data);
