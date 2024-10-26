@@ -12,12 +12,8 @@ function ArticleFeed() {
   });
 
   return (
-    <div className="ArticleFeed">
-      
-        <h1>Posts Feed</h1>  
-
-        <ArticleFeedAction />
-
+    <div className="ArticleFeed">      
+      <ArticleFeedAction />
     </div>
   );
 }

@@ -1,15 +1,13 @@
 import { logout } from "../services/Authentication.service";
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function Logout(props) { 
-  
-  ///////////////////////////////////// Handles the Sign Out ////////////////////////////////////
   async function handleSignOut() { 
     try {
-
       const isLogout = await logout();
 
-      if(isLogout){
-        window.location.href = "/login"
+      if (isLogout) {
+        window.location.href = "/login";
       }
 
     } catch (error) {
@@ -22,15 +20,27 @@ function Logout(props) {
     }  
   }
 
-
-
-  ///////////////////////////////////// Form ////////////////////////////////////
-
   return (
-    <div className="">
-      
-      <button onClick={handleSignOut}>Log off - auth serice</button><br />
-      
+    <div className="container mt-5">
+      <div className="card p-4 shadow-lg text-center" style={{ maxWidth: "400px", margin: "auto" }}>
+        <h3 className="mb-4" style={{ color: "#143157" }}>Are you sure you want to log out?</h3>
+        
+        <button 
+          onClick={handleSignOut} 
+          className="btn btn-block"
+          style={{ backgroundColor: "#ff6600", color: "#fff" }}
+        >
+          Log Out
+        </button>
+
+        <button 
+          onClick={() => window.location.href = "/"}
+          className="btn btn-link mt-3"
+          style={{ color: "#143157", fontWeight: "bold" }}
+        >
+          Cancel
+        </button>
+      </div>
     </div>
   );
 }

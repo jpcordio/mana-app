@@ -14,9 +14,8 @@ function CompaniesList() {
 
   return (
     <div className="App">
-      <h1>All Companies</h1>
       <AllCompanyList />
-      <a href="/company">Back</a> <br />
+      
     </div>
   );
 }

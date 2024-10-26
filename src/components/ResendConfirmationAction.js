@@ -1,46 +1,59 @@
 import { useState } from "react";
 import { resendVerificationEmail } from "../services/Email.service";
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function ResendConfirmationAction(props) { 
+  const [emailAddress, setEmailAddress] = useState('');
 
-    var [emailAddress, setEmailAddress] = useState('');
+  function handleEmail(e) {
+    e.preventDefault();
+    setEmailAddress(e.target.value);
+  }
 
-
-    //////////////////////////////////// handle the field  ////////////////////////////////////
-
-    function handleEmail(e) {
-        e.preventDefault();
-        setEmailAddress(e.target.value);
+  async function handleResend(e) {
+    e.preventDefault();
+    try {
+      await resendVerificationEmail(emailAddress);
+      alert("Verification email sent!");
+      // Você pode redirecionar o usuário ou limpar o campo de entrada aqui, se desejar.
+    } catch (error) {
+      if (error.response) {
+        console.error("Erro na requisição:", error.response.data);
+      } else {
+        console.error("Erro desconhecido:", error.message);
+      }
+      alert('Erro ao enviar email.');
     }
-
-    ///////////////////////////////////// Handles the re-send email verification ////////////////////////////////////
-    async function handleResend(e) {
-        e.preventDefault();
-        try {
-            
-          await resendVerificationEmail(emailAddress);
-
-        } catch (error) {
-            if (error.response) {
-            console.error("Erro na requisição:", error.response.data);
-            } else {
-            console.error("Erro desconhecido:", error.message);
-            }
-            alert('Erro ao enviar email.');
-        }
-    }
-
-
-  ///////////////////////////////////// Form ////////////////////////////////////
+  }
 
   return (
-    <div className="">
+    <div className="container mt-5">
+      <div className="card p-4 shadow-lg" style={{ maxWidth: "400px", margin: "auto" }}>
+        <h3 className="mb-4" style={{ color: "#143157" }}>Resend Email Confirmation</h3>
 
-      <label for="email">Email</label><br></br>
-      <input type="text" id="email" name="email" value={emailAddress} onChange={handleEmail} /><br></br>
+        <form onSubmit={handleResend}>
+          <div className="mb-3">
+            <label htmlFor="email" className="form-label">Email</label>
+            <input 
+              type="text" 
+              id="email" 
+              name="email" 
+              className="form-control" 
+              value={emailAddress} 
+              onChange={handleEmail} 
+              required 
+            />
+          </div>
 
-      <button onClick={handleResend}>Resend Email Confirmation</button> <br /> <br />
-      
+          <button 
+            type="submit" 
+            className="btn btn-block" 
+            style={{ backgroundColor: "#ff6600", color: "#fff" }}
+          >
+            Resend Email Confirmation
+          </button>
+        </form>
+      </div>
     </div>
   );
 }

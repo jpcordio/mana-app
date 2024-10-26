@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { getCompanyProfile } from '../services/Profile.service';
 import ArticleList from './ArticlesList';
+import { Button, Card } from 'react-bootstrap';
 
 function ProfileAction() {
   const location = useLocation();
@@ -36,24 +37,38 @@ function ProfileAction() {
   return (
     <div className="">
       {profile ? (
-        <div>
-          <h2>{name}</h2>
-          <p>Address: {profile.address1}, {profile.address2}</p>
-          <p>City: {profile.city}, County: {profile.county}</p>
-          <p>Country: {profile.country}, Postcode: {profile.postcode}</p>
-          <p>Phone: {profile.phone}, Mobile: {profile.mobile}</p>
-          <p>Website: <a target="_blank" href={profile.website} rel="noopener noreferrer">{profile.website}</a></p>
-          <p>Email: {profile.email}</p>          
-
-        </div>
+        <Card className="mt-4 shadow-sm">
+          <Card.Body>
+            <Card.Title className="text-center">{name}</Card.Title>
+            <Card.Text>
+              <strong>Address: </strong> {profile.address1}, {profile.address2} <br />
+              <strong>City: </strong> {profile.city}, <strong>County:</strong> {profile.county} <br />
+              <strong>Country: </strong> {profile.country}, <strong>Postcode:</strong> {profile.postcode} <br />
+              <strong>Phone: </strong> {profile.phone}, <strong>Mobile:</strong> {profile.mobile} <br />
+              <strong>Website: </strong> 
+              <a target="_blank" href={profile.website} rel="noopener noreferrer" className="text-decoration-none">
+                {profile.website}
+              </a>
+              <br />
+              <strong>Email: </strong> {profile.email}
+            </Card.Text>
+            <Button variant="warning" className="btn-sm" onClick={() => window.history.back()}>
+              Back
+            </Button>
+          </Card.Body>
+        </Card>
       ) : (
-        <p>No profile found. <br /><a href="/company">Back</a> <br /></p>
+        <div>
+          <p>No profile found.</p>
+          <Button variant="warning" className="btn-sm me-2 mb-3" onClick={() => window.history.back()}>
+            Back
+          </Button>
+        </div>
+        
         
       )}
 
-      <hr />
-
-      <h2>Posts</h2>
+      <h2 className="mt-3">Posts</h2>
 
       <ArticleList user_Id={id} />
     </div>

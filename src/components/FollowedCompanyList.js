@@ -2,6 +2,8 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import Companies from "./Companies"; // Importação correta
 import { isLogged } from "../services/Authentication.service";
+import { Spinner, Container, Row, Col, ListGroup, Alert } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 function FollowedCompanyList({ user_Id }) {
   const [companies, setCompanies] = useState([]);
@@ -11,7 +13,7 @@ function FollowedCompanyList({ user_Id }) {
   const client = localStorage.getItem("client");
   const uid = localStorage.getItem("uid");
 
-  ///////////////////////////////////// Check Validation ////////////////////////////////////
+  // Check Validation
   useEffect(() => {
     if (!isLogged()) {
       window.location.href = "/login";
@@ -44,24 +46,41 @@ function FollowedCompanyList({ user_Id }) {
   }, [user_Id]);
 
   if (loading) {
-    return <p>Carregando...</p>;
+    return (
+      <Container className="d-flex justify-content-center align-items-center" style={{ minHeight: "80vh" }}>
+        <Spinner animation="border" role="status" variant="primary">
+          <span className="visually-hidden">Loading...</span>
+        </Spinner>
+      </Container>
+    );
   }
 
   if (error) {
-    return <p>{error}</p>;
+    return (
+      <Container className="d-flex justify-content-center align-items-center" style={{ minHeight: "80vh" }}>
+        <Alert variant="danger" className="text-center">
+          {error}
+        </Alert>
+      </Container>
+    );
   }
 
   return (
-    <div className="">
-      <ul>
-        {companies.map((company, index) => (
-          <li key={index}>
-            <Companies id={company.id} name={company.name} email={company.email} />
-            <hr />
-          </li>
-        ))}
-      </ul>
-    </div>
+    <Container className="mt-5">
+      <Row className="justify-content-center">
+        <Col md={8}>
+          <h1 className="text-center mb-4">Followed Companies</h1>
+          <Link to="/companies-list" className="btn btn-warning btn-sm me-2 mb-3">Find More Companies</Link>
+          <ListGroup>
+            {companies.map((company, index) => (
+              <ListGroup.Item key={index} className="mb-3 p-3 border rounded shadow-sm">
+                <Companies id={company.id} name={company.name} email={company.email} />
+              </ListGroup.Item>
+            ))}
+          </ListGroup>
+        </Col>
+      </Row>
+    </Container>
   );
 }
 

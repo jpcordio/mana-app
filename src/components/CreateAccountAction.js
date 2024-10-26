@@ -1,24 +1,18 @@
 import { useState } from "react";
 import { createUser } from "../services/User.service";
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'font-awesome/css/font-awesome.min.css'; // Make sure to import Font Awesome CSS
 
 function CreateAccountAction(props) { 
+  const [emailAddress, setEmailAddress] = useState('');
+  const [password, setPassword] = useState('');
+  const [inputType, setInputType] = useState('password');
+  const [name, setName] = useState('');
+  const [nickname, setNickname] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [inputTypeConfirmPassword, setInputTypeConfirmPassword] = useState('password');
+  const [typeRegistration, setTypeRegistration] = useState(false); // false for "Customer", true for "Business"
 
-  var [emailAddress, setEmailAddress] = useState('');
-
-  var [password, setPassword] = useState('');
-  var [inputType, setInputType] = useState('password');
-
-  var [name, setName] = useState('');
-  var [nickname, setNickname] = useState('');
-
-  var [confirmPassword, setConfirmPassword] = useState('');
-  var [inputTypeConfirmPassword, setInputTypeConfirmPassword] = useState('password')
-
-  var [typeRegistration, setTypeRegistration] = useState(false); // false for "Customer", true for "Business"
-    
-  //////////////////////////////////// handle the field  ////////////////////////////////////
-
-  // "registration type (false for "Customer", true for "Business")
   const handleRegistrationType = (event) => {
     setTypeRegistration(event.target.value === "true");
   };
@@ -28,117 +22,186 @@ function CreateAccountAction(props) {
     setEmailAddress(e.target.value);
   }
 
-  // handle password
   function handlePassword(e) {
     e.preventDefault();
     setPassword(e.target.value);
   }
 
-  // handle confirmation password
   function handleConfirmPassword(e) {
     e.preventDefault();
-    setConfirmPassword(e.target.value)
+    setConfirmPassword(e.target.value);
   }
 
-  // handle name
   function handleName(e) {
     e.preventDefault();
     setName(e.target.value);
   }
 
-  // handle nickname
   function handleNickname(e) {
     e.preventDefault();
     setNickname(e.target.value);
   }
 
-  //////////////////////////////////// handle the "show/hide" password and confirm password ////////////////////////////////////
-  
-  // handle password
   function togglePasswordVisibility(e) {
     e.preventDefault();
     setInputType(inputType === 'password' ? 'text' : 'password');
   }
 
-  // handle confirmation password
   function toggleConfirmPasswordVisibility(e) {
     e.preventDefault();
     setInputTypeConfirmPassword(inputTypeConfirmPassword === 'password' ? 'text' : 'password');
   }
 
-  ///////////////////////////////////// Handles the Registration of a new user ////////////////////////////////////
   async function handleRegister(e) {
     e.preventDefault();
-
     try {
-
       await createUser(emailAddress, password, confirmPassword, name, typeRegistration);
-
-      window.location.href="/login"
-
+      window.location.href = "/login";
     } catch (error) {
       if (error.response) {
-        console.error("Erro on the request:", error.response.data);
+        console.error("Error on the request:", error.response.data);
       } else {
-        console.error("Unknown Erro:", error.message);
+        console.error("Unknown error:", error.message);
       }
-
-      alert('Erro while registering the new user.');
+      alert('Error while registering the new user.');
     }
   }
 
-  
-
-  ///////////////////////////////////// Form ////////////////////////////////////
   return (
-    <div className="">
+    <div className="container mt-5">
+      <div className="card p-4 shadow-lg" style={{ maxWidth: "500px", margin: "auto" }}>
+        <h3 className="mb-4" style={{ color: "#143157" }}>Create Account</h3>
+        <form onSubmit={handleRegister}>
+          <div className="mb-3">
+            <label htmlFor="email" className="form-label">Email</label>
+            <input 
+              type="email" 
+              id="email" 
+              name="email" 
+              className="form-control" 
+              value={emailAddress} 
+              onChange={handleEmail} 
+              required 
+            />
+          </div>
 
-      <label for="email">Email</label><br></br>
-      <input type="email" id="email" name="email" value={emailAddress} onChange={handleEmail} required /><br></br>
-      
+          <div className="mb-3">
+            <label htmlFor="password" className="form-label">Password</label>
+            <div className="input-group">
+              <input 
+                type={inputType} 
+                id="password" 
+                name="password" 
+                className="form-control" 
+                value={password} 
+                onChange={handlePassword} 
+                required 
+              />
+              <div className="input-group-append">
+                <button 
+                  type="button" 
+                  className="btn" 
+                  style={{ backgroundColor: "#ff6600", color: "#fff" }}
+                  onClick={togglePasswordVisibility}
+                >
+                  {inputType === 'password' ? 
+                    <i className="fa fa-eye"></i> : 
+                    <i className="fa fa-eye-slash"></i>}
+                </button>
+              </div>
+            </div>
+          </div>
 
-      <label for="password">Password</label><br></br>
-      <input type={inputType} id="password" name="password" value={password} onChange={handlePassword} required />
-      <button onClick={togglePasswordVisibility}>
-        {inputType === 'password' ? 'Mostrar Senha' : 'Esconder Senha'}
-      </button><br />
+          <div className="mb-3">
+            <label htmlFor="confirmPassword" className="form-label">Confirm Password</label>
+            <div className="input-group">
+              <input 
+                type={inputTypeConfirmPassword} 
+                id="confirmPassword" 
+                name="confirmPassword" 
+                className="form-control" 
+                value={confirmPassword} 
+                onChange={handleConfirmPassword} 
+                required 
+              />   
+              <div className="input-group-append">
+                <button 
+                  type="button" 
+                  className="btn" 
+                  style={{ backgroundColor: "#ff6600", color: "#fff" }}
+                  onClick={toggleConfirmPasswordVisibility}
+                >
+                  {inputTypeConfirmPassword === 'password' ? 
+                    <i className="fa fa-eye"></i> : 
+                    <i className="fa fa-eye-slash"></i>}
+                </button>
+              </div>
+            </div>
+          </div>
 
-      <label for="confirmPassword">Confirm Password</label><br></br>
-      <input type={inputTypeConfirmPassword} id="confirmPassword" name="confirmPassword" value={confirmPassword} onChange={handleConfirmPassword} required /> 
-      <button onClick={toggleConfirmPasswordVisibility}>
-        {inputTypeConfirmPassword === 'password' ? 'Mostrar Senha' : 'Esconder Senha'}
-      </button><br />
-      
-      <label for="name">Name</label><br></br>
-      <input type='text' id="name" name="name" value={name} onChange={handleName} required /> <br></br>
-      
-      {/* <label for="Nickname">Nickname</label><br></br>
-      <input type='text' id="nickname" name="nickname" value={nickname} onChange={handleNickname} /> <br></br> */}
+          <div className="mb-3">
+            <label htmlFor="name" className="form-label">Name</label>
+            <input 
+              type="text" 
+              id="name" 
+              name="name" 
+              className="form-control" 
+              value={name} 
+              onChange={handleName} 
+              required 
+            />
+          </div>
 
-      <p>Are you:</p>
-      <input
-        type="radio"
-        id="business"
-        name="registration_type"
-        value={true}
-        checked={typeRegistration === true}
-        onChange={handleRegistrationType}
-      />
-      <label htmlFor="business">Business</label>
+          {/* <div className="mb-3">
+            <label htmlFor="nickname" className="form-label">Nickname</label>
+            <input 
+              type="text" 
+              id="nickname" 
+              name="nickname" 
+              className="form-control" 
+              value={nickname} 
+              onChange={handleNickname} 
+            />
+          </div> */}
 
-      <input
-        type="radio"
-        id="customer"
-        name="registration_type"
-        value={false}
-        checked={typeRegistration === false}
-        onChange={handleRegistrationType}
-      />
-      <label htmlFor="customer">Customer</label>
-      <br /><br />
-      
-      <button onClick={handleRegister}>Sign Up</button>  <br />     
-      
+          <div className="mb-3">
+            <p>Are you:</p>
+            <div className="form-check">
+              <input
+                type="radio"
+                id="business"
+                name="registration_type"
+                value={true}
+                checked={typeRegistration === true}
+                onChange={handleRegistrationType}
+                className="form-check-input"
+              />
+              <label htmlFor="business" className="form-check-label">Business</label>
+            </div>
+
+            <div className="form-check">
+              <input
+                type="radio"
+                id="customer"
+                name="registration_type"
+                value={false}
+                checked={typeRegistration === false}
+                onChange={handleRegistrationType}
+                className="form-check-input"
+              />
+              <label htmlFor="customer" className="form-check-label">Customer</label>
+            </div>
+          </div>
+
+          <button 
+            type="submit" 
+            className="btn btn-block" 
+            style={{ backgroundColor: "#ff6600", color: "#fff" }}
+          >
+            Sign Up
+          </button>
+        </form>
+      </div>
     </div>
   );
 }

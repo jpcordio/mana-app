@@ -1,57 +1,47 @@
 import { useState, useEffect } from "react";
 import { login } from "../services/Authentication.service";
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'font-awesome/css/font-awesome.min.css'; // Import Font Awesome CSS
 
 function LoginAction(props) {
+  const [emailAddress, setEmailAddress] = useState('');
+  const [password, setPassword] = useState('');
+  const [inputType, setInputType] = useState('password');
+  const [loginMessage, setLoginMessage] = useState('');  
+  const [resetPwdMessage, setResetMessage] = useState('');
 
-  //var [response, setResponse] = "";  
-  var [emailAddress, setEmailAddress] = useState('');
-  var [password, setPassword] = useState('');
-  var [inputType, setInputType] = useState('password');
-  var [loginMessage, setLoginMessage] = useState('');  
-  var [resetPwdMessage, setResetMessage] = useState('');
-  
-  //////////////////////////////////// Handle the fields ////////////////////////////////////
   function handleEmail(e) {
     e.preventDefault();
     setEmailAddress(e.target.value);
   }
 
-  // handle password
   function handlePassword(e) {
     e.preventDefault();
     setPassword(e.target.value);
   }
 
-  //////////////////////////////////// handle the "show/hide" password and confirm password ////////////////////////////////////
-  
-  // handle password
   function togglePasswordVisibility(e) {
     e.preventDefault();
     setInputType(inputType === 'password' ? 'text' : 'password');
   }
 
-  //////////////////////////////////// Handles the Log In ////////////////////////////////////
   async function handleLogIn(e) {
     e.preventDefault();    
 
     try {
       await login(emailAddress, password);
-
       window.location.href="/"
-
-  } catch (error) {
-    if (error.response) {
-      console.error("Erro on the request:", error.response.data);
-    } else {
-        console.error("Unknown Erro:", error.message);
-    }
+    } catch (error) {
+      if (error.response) {
+        console.error("Error on the request:", error.response.data);
+      } else {
+        console.error("Unknown Error:", error.message);
+      }
       alert(error.response.data.errors[0]);
     }
   }
 
-  //////////////////////////////////// Handles the Log In message from the Account Creation ////////////////////////////////////
   useEffect(() => {
-    // Executa a lógica após a página carregar
     const params = new URLSearchParams(window.location.search);
     const accountConfirmationMessage = params.get('account_confirmation_success');
     const resetPasswordMessage = params.get('password_reset_success');
@@ -69,42 +59,77 @@ function LoginAction(props) {
         "Your password has been successfully updated." : 
         "Password change failed!";
       
-        setResetMessage(resetMessage);
+      setResetMessage(resetMessage);
     }   
 
   }, []);
 
   return (
-    <div className="">
+    <div className="container mt-5">
+      <div className="card p-4 shadow-lg" style={{ maxWidth: "400px", margin: "auto" }}>
+        <h2 className="text-center mb-4" style={{ color: "#143157" }}>Login</h2>
 
-      {/* Show the loginMessage only if it is not empty */}
-      {loginMessage && <p>{loginMessage}</p>}
+        {loginMessage && <div className="alert alert-success text-center">{loginMessage}</div>}
+        {resetPwdMessage && <div className="alert alert-info text-center">{resetPwdMessage}</div>}
+        
+        <form onSubmit={handleLogIn}>
+          <div className="form-group">
+            <label htmlFor="email" style={{ color: "#143157" }}>Email</label>
+            <input 
+              type="email" 
+              id="email" 
+              name="email" 
+              className="form-control" 
+              value={emailAddress} 
+              onChange={handleEmail} 
+              required 
+            />
+          </div>
 
-      {/* Show the loginMessage only if it is not empty */}
-      {resetPwdMessage && <p>{resetPwdMessage}</p>}
-      
-      <hr />
+          <div className="form-group">
+            <label htmlFor="password" style={{ color: "#143157" }}>Password</label>
+            <div className="input-group">
+              <input 
+                type={inputType} 
+                id="password" 
+                name="password" 
+                className="form-control" 
+                value={password} 
+                onChange={handlePassword} 
+                required 
+              />
+              <div className="input-group-append">
+                <button 
+                  type="button" 
+                  className="btn" 
+                  style={{ backgroundColor: "#ff6600", color: "#fff" }}
+                  onClick={togglePasswordVisibility}
+                >
+                  {inputType === 'password' ? 
+                    <i className="fa fa-eye"></i> : 
+                    <i className="fa fa-eye-slash"></i>}
+                </button>
+              </div>
+            </div>
+          </div>
 
-      <label for="email">Email</label><br></br>
-      <input type="email" id="email" name="email" value={emailAddress} onChange={handleEmail} /><br></br>      
+          <button 
+            type="submit" 
+            className="btn btn-block mt-3" 
+            style={{ backgroundColor: "#143157", color: "#fff" }}
+          >
+            Log In
+          </button>
+        </form>
 
-      <label for="password">Password</label><br></br>
-      <input type={inputType} id="password" name="password" value={password} onChange={handlePassword} /> 
-      <button onClick={togglePasswordVisibility}>
-        {inputType === 'password' ? 'Mostrar Senha' : 'Esconder Senha'}
-      </button><br />
-
-      <button onClick={handleLogIn}>Log In</button> <br />
-
-
-      <a href="/forgot-password">Forget Password</a> <br />
-      <a href="/resend-confirmation">Resend Confirmation Email</a><br />
-      <a href="/create-account">Sign In</a><br />
-
-      <hr />
-
+        <div className="text-center mt-4">
+          <a href="/forgot-password" style={{ color: "#ff6600" }}>Forgot Password?</a><br />
+          <a href="/resend-confirmation" style={{ color: "#ff6600" }}>Resend Confirmation Email</a><br />
+          <a href="/create-account" style={{ color: "#143157", fontWeight: "bold" }}>Sign Up</a>
+        </div>
+      </div>
     </div>
   );
 }
-  
-  export default LoginAction;
+
+export default LoginAction;

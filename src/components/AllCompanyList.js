@@ -2,6 +2,8 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import Companies from "./Companies"; // Importação correta
 import { isLogged } from "../services/Authentication.service";
+import { ListGroup, Container, Row, Col } from 'react-bootstrap';
+import { Link } from "react-router-dom";
 
 function AllCompanyList({ user_Id }) {
   const [companies, setCompanies] = useState([]);
@@ -52,16 +54,23 @@ function AllCompanyList({ user_Id }) {
   }
 
   return (
-    <div className="">
-      <ul>
-        {companies.map((company, index) => (
-          <li key={index}>
-            <Companies id={company.id} name={company.name} email={company.email} />
-            <hr />
-          </li>
-        ))}
-      </ul>
-    </div>
+    <Container className="mt-5">
+      <Row className="justify-content-center">
+        <Col md={8}>
+          <h1 className="text-center mb-4">All Companies</h1>
+          
+          <Link to="/company" className="btn btn-warning btn-sm me-2 mb-3">Back</Link>
+          
+          <ListGroup>
+            {companies.map((company, index) => (
+              <ListGroup.Item key={index} className="d-flex justify-content-between align-items-center border rounded mb-2 shadow-sm">
+                <Companies id={company.id} name={company.name} email={company.email} />
+              </ListGroup.Item>
+            ))}
+          </ListGroup>
+        </Col>
+      </Row>
+    </Container>
   );
 }
 

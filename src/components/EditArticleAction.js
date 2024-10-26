@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { fetchArticleId, updateArticle } from "../services/Articles.service";
 import { isCompany, isLogged } from "../services/Authentication.service";
 import { Link } from "react-router-dom";
+import { Spinner } from "react-bootstrap";
 
 function EditArticleAction() { 
     ////////////////////////////////////    Variables   ////////////////////////////////////
@@ -66,51 +67,67 @@ function EditArticleAction() {
 
         try {
             await updateArticle(articleId, title, body, imageUrl);
-            alert("Post editado com sucesso.");
+            alert("Posted edited successfully.");
             window.location.href = "/posts";
         } catch (error) {
             if (error.response) {
-                console.error("Erro na requisição:", error.response.data);
+                console.error("Erro on the request:", error.response.data);
             } else {
-                console.error("Erro desconhecido:", error.message);
+                console.error("Unkown Error:", error.message);
             }
-            alert('Erro ao editar o post.');
+            alert('Error when editing the post.');
         }
     }
 
     return (
-        <div className="">
+        <div className="container mt-5">
             {loading ? (
-                <p>Loading...</p> // Exibe a mensagem de carregamento enquanto os dados estão sendo obtidos
+                <div className="d-flex justify-content-center align-items-center" style={{ minHeight: "80vh" }}>
+                <Spinner animation="border" role="status" variant="primary">
+                    <span className="visually-hidden">Loading...</span>
+                </Spinner>
+                </div>
             ) : (
-                <div>
-                    <label htmlFor="title">Title</label><br></br>
+            <div>
+                <h2 className="text-center mb-4">Update Article</h2>
+                <form>
+                    <div className="mb-3">
+                    <label htmlFor="title" className="form-label">Title</label>
                     <input 
                         type="text" 
                         id="title" 
                         name="title" 
+                        className="form-control" 
                         value={title} 
                         onChange={handleTitle} 
                         required 
-                    /> <br></br>
-                    
-                    <label htmlFor="body">Content</label><br></br>
+                    />
+                    </div>
+
+                    <div className="mb-3">
+                    <label htmlFor="body" className="form-label">Content</label>
                     <textarea 
                         id="body" 
                         name="body" 
                         rows="4" 
-                        cols="50" 
+                        className="form-control" 
                         value={body} 
                         onChange={handleBody} 
                         required 
-                    /> <br></br>
-                    
-                    <button onClick={handleUpdateArticle}>Save</button>
-                    <Link to="/posts">
-                        <button>Back</button>
+                    />
+                    </div>
+
+                    <div className="d-flex justify-content-between">
+                    <button type="button" className="btn btn-primary" onClick={handleUpdateArticle}>
+                        Save
+                    </button>
+                    <Link to="/posts" className="btn btn-warning">
+                        Back
                     </Link>
-                </div>
-            )}
+                    </div>
+                </form>
+            </div>
+        )}
         </div>
     );
 }

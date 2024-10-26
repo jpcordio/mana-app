@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
 import Articles from "./Articles";
-import { isLogged } from "../services/Authentication.service";
+import { isLogged, isCompany } from "../services/Authentication.service";
 
 function ArticleList({ user_Id }) {
   const [articles, setArticles] = useState([]);
@@ -59,18 +59,23 @@ function ArticleList({ user_Id }) {
   }
 
   return (
-    <div className="home">            
-        <ul>
-            {
-                articles.map((article, index) => (
-                    //console.log(article),
-                    <li key={index}> 
-                        <Articles id={article.id} title={article.title} body={article.body} userId ={article.user.id} />
-                        <hr />
-                    </li>
-                ))
-            }
-        </ul>
+    <div className="container mt-5">
+      {isCompany() && (
+        <div className="home mb-5">
+          <h1>My Posts</h1>
+          <a href="/create-post" className="btn btn-primary btn-lg btn-sm">
+            New Post
+          </a>
+        </div>
+      )}
+      <ul>
+        {articles.map((article, index) => (
+          <li key={index}>
+            <Articles id={article.id} title={article.title} body={article.body} userId={article.user.id} />            
+          </li>
+        ))}
+      </ul>
+    
     </div>
 );
 }

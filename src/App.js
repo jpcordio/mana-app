@@ -1,5 +1,5 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
-import Navbar from "./components/Navbar"
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Navbar from "./components/Navbar";
 import Home from "./views/Home";
 import Login from "./views/Login";
 import CreateAccount from "./views/CreateAccount";
@@ -15,31 +15,36 @@ import Company from "./views/Company";
 import Profile from "./views/Profile";
 import CompaniesList from "./views/CompaniesList";
 import ArticleFeed from "./views/ArticleFeed";
+import Footer from './components/Footer';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'font-awesome/css/font-awesome.min.css';
+import './App.css';
 
 function App() {
   return (
-    <div className="app">
-      
+    <div className="wrapper">
       <Router>
         <Navbar />
-        <Routes>
-          <Route path="/" element={<Home />}></Route>
-          <Route path="login" element={<Login />}></Route>
-          <Route path="create-account" element={<CreateAccount />}></Route>
-          <Route path="forgot-password" element={<ForgotPassword />}></Route>
-          <Route path="reset-password" element={<ResetPassword />}></Route>
-          <Route path="resend-confirmation" element={<ResendConfirmation />}></Route>
-          <Route path="logout" element={<Logout />}></Route>
-          <Route path="account" element={<Account />}></Route>
-          <Route path="posts" element={<Article />}></Route>
-          <Route path="posts-feed" element={<ArticleFeed />}></Route>
-          <Route path="create-post" element={<CreateArticle />}></Route>
-          <Route path="edit-post" element={<EditArticle />}></Route>
-          <Route path="company" element={<Company />}></Route>
-          <Route path="companies-list" element={<CompaniesList />}></Route>
-          <Route path="profile" element={<Profile />}></Route>
-        </Routes>
-
+        <div className="content">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="login" element={<Login />} />
+            <Route path="create-account" element={<CreateAccount />} />
+            <Route path="forgot-password" element={<ForgotPassword />} />
+            <Route path="reset-password" element={<ResetPassword />} />
+            <Route path="resend-confirmation" element={<ResendConfirmation />} />
+            <Route path="logout" element={<Logout />} />
+            <Route path="account" element={<Account />} />
+            <Route path="posts" element={<Article />} />
+            <Route path="posts-feed" element={<ArticleFeed />} />
+            <Route path="create-post" element={<CreateArticle />} />
+            <Route path="edit-post" element={<EditArticle />} />
+            <Route path="company" element={<Company />} />
+            <Route path="companies-list" element={<CompaniesList />} />
+            <Route path="profile" element={<Profile />} />
+          </Routes>
+        </div>
+        <Footer />
       </Router>
     </div>
   );

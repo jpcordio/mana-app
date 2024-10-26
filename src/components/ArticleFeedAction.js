@@ -29,12 +29,12 @@ function ArticleFeedAction({ user_Id }) {
         const response = await fetchArticleFeed();
             
         if (response.data.length > 0) {
-          setArticles(response.data);
+          setArticles(response.data);         
         } else {
-          setError("Nenhum artigo encontrado.");
+          setError("No posts found.");
         }
       } catch (err) {
-        setError("Erro ao buscar os artigos.");
+        setError("Erro when trying to find posts.");
       } finally {
         setLoading(false);
       }
@@ -53,18 +53,24 @@ function ArticleFeedAction({ user_Id }) {
   }
 
   return (
-    <div className="home">            
-        <ul>
-            {
-                articles.map((article, index) => (
-                    //console.log(article),
-                    <li key={index}> 
-                        <Articles id={article.id} title={article.title} body={article.body} userId ={article.user.id} />
-                        <hr />
-                    </li>
-                ))
-            }
+    <div className="container mt-5">
+      <div className="home">
+        <h1 className="text-center mb-4">Posts Feed</h1>
+        <ul className="list-unstyled">
+          {articles.map((article, index) => (
+            <li key={index} className="mb-4">
+              <div className="card shadow-sm">
+                <div className="card-body">
+                  <h5 className="card-title">{article.title}</h5>
+                  <p className="card-text">{article.body}</p>
+                  {/* <small className="text-muted">Author ID: {article.user.id}</small> */}
+                  <small className="text-muted">Author: <a href={`http://localhost:3001/profile?id=${article.user.id}&name=${article.user.name}`}>{article.user.name}</a></small>
+                </div>
+              </div>
+            </li>
+          ))}
         </ul>
+      </div>
     </div>
 );
 }

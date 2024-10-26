@@ -13,11 +13,7 @@ function CreateArticle() {
 
   return (
     <div className="createaccount">
-      
-      <h1>Create New Post</h1>
-
         <CreateArticleAction />
-
     </div>
   );
 }

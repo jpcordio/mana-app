@@ -1,17 +1,74 @@
+import React from "react";
+import { Container, Row, Col, Card } from "react-bootstrap";
+import logo from "../assets/images/mana-bb.png"; // Adjust the path if necessary
+
 function Home() {
   return (
-    <div className="Home">
-      
-      <h1>Home</h1>  
+    <Container className="mt-5">
+      <div className="text-center mb-5">
+        <img src={logo} alt="MANA Logo" className="img-fluid mb-4" />
+        <h1>Welcome to MANA</h1>
+        <p>
+          MANA is an innovative platform that strengthens the connection between customers and their favorite places. 
+          We offer an easy way to follow and connect with businesses, receiving updates and discounts firsthand.
+        </p>
+      </div>
 
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce vitae eros quis enim vestibulum efficitur sit amet nec odio. Curabitur a lorem vitae sapien elementum sagittis. Integer in placerat enim. Vivamus condimentum laoreet ligula, sed cursus neque lobortis vitae. In ligula nisl, maximus vel lectus id, bibendum condimentum sapien. Morbi interdum pulvinar urna in tristique. Ut commodo ipsum nisi, quis luctus ante vulputate eu. Praesent finibus quam sed elementum iaculis. Quisque dictum venenatis elit, eget imperdiet tellus cursus et. Aenean nibh urna, imperdiet porta commodo nec, elementum mattis metus. Aliquam luctus felis eget diam mattis, quis sollicitudin felis finibus.
+      <section className="mb-5">
+        <h2>Why Should Businesses Use MANA?</h2>
+        <p>
+          With MANA, businesses can connect directly with their customers, offering promotions and news in real time.
+          This interaction not only increases brand visibility but also enhances customer loyalty. 
+          By using MANA, businesses have the opportunity to grow and expand their customer base efficiently.
         </p>
-        <p>Sed placerat, enim eget sollicitudin pharetra, lacus tellus fermentum diam, ut venenatis sem metus bibendum massa. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Curabitur consectetur dictum ultrices. Aliquam sed erat mattis, ultricies dui in, gravida massa. Nam egestas eu augue sed tincidunt. Duis sit amet nisi eleifend, imperdiet ligula quis, consequat purus. Cras feugiat pretium finibus. Suspendisse euismod tempor ante vel euismod. Donec gravida magna nec sapien rhoncus, et interdum nisl varius. Cras iaculis gravida lectus ac dictum. Fusce posuere purus a vestibulum ultrices. Maecenas tempor, elit ac auctor laoreet, sapien ante euismod lorem, vel sagittis mauris risus eget nisi. Suspendisse convallis interdum faucibus. Morbi lacinia diam urna, id tincidunt nulla consequat id. Suspendisse eleifend efficitur sem, quis feugiat mauris consequat eget. Mauris finibus, metus vel cursus sagittis, augue ex dignissim urna, quis semper lectus augue et lorem.
+      </section>
+
+      <section className="mb-5">
+        <h2>Why Should Users Use MANA?</h2>
+        <p>
+          MANA provides users the ability to follow their favorite places, receive exclusive offers, and stay updated 
+          on what’s happening in their community. With a user-friendly interface and interactive features, the user experience is prioritized, 
+          ensuring that everyone makes the most of their connection with local businesses.
         </p>
-        <p>Sed est risus, cursus ac lacus at, porttitor hendrerit lorem. Integer porta risus eros, vitae efficitur eros tincidunt quis. Vestibulum ut dictum quam, ac lobortis quam. Nulla sit amet justo consectetur, malesuada mauris sollicitudin, vulputate lectus. Ut a magna in mauris consequat aliquam. Fusce vel odio lacinia, maximus eros quis, finibus libero. Proin eget ante eget justo posuere egestas. Ut in malesuada nisi. Sed eu euismod sapien, nec vehicula risus. Praesent laoreet, diam ac accumsan rhoncus, erat enim auctor est, ut luctus magna augue non velit. Donec arcu enim, scelerisque ac consequat vitae, luctus vitae dui. Duis orci libero, varius vel vestibulum et, varius vitae urna. Quisque egestas quam nec condimentum pulvinar. Aliquam hendrerit bibendum scelerisque.
-        </p>
-        <hr />
-    </div>
+      </section>
+
+      <h2 className="text-center mb-4">Explore More</h2>
+      <Row>
+        <Col md={4}>
+          <Card className="mb-4">
+            <Card.Body>
+              <Card.Title>Businesses (For Customers Only)</Card.Title>
+              <Card.Text>
+                Discover and follow the businesses you love.
+              </Card.Text>
+              <Card.Link href="/companies-list">View Businesses</Card.Link>
+            </Card.Body>
+          </Card>
+        </Col>
+        <Col md={4}>
+          <Card className="mb-4">
+            <Card.Body>
+              <Card.Title>Posts (For Companies Only)</Card.Title>
+              <Card.Text>
+                Stay updated on news and promotions.
+              </Card.Text>
+              <Card.Link href="/posts">View Posts</Card.Link>
+            </Card.Body>
+          </Card>
+        </Col>
+        <Col md={4}>
+          <Card className="mb-4">
+            <Card.Body>
+              <Card.Title>Account (All Users)</Card.Title>
+              <Card.Text>
+                Manage your settings and preferences.
+              </Card.Text>
+              <Card.Link href="/account">Settings</Card.Link>
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row>
+    </Container>
   );
 }
 

@@ -4,9 +4,7 @@ function CreateAccount() {
   return (
     <div className="createaccount">
       
-      <h1>Create Account</h1>
-
-        <CreateAccountAction />
+      <CreateAccountAction />
 
     </div>
   );

@@ -15,12 +15,7 @@ function Company() {
 
   return (
     <div className="App">
-      <h1>Followed Companies</h1>
-      <a href="/companies-list">Find More Companies</a> <br />
       <FollowedCompanyList />
-      
-      {/* <h1>All Companies</h1> */}
-      {/* <AllCompanyList /> */}
     </div>
   );
 }
