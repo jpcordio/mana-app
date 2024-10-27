@@ -12,17 +12,13 @@ export async function createUser(emailAddress, password, confirmPassword, name, 
         role: typeRegistration
         });
 
-        return response.data.message;
+        return { status: true, message: response.data.data.email };
 
     } catch (error) {
-        if (error.response) {
-            console.error("Erro with the request:", error.response.data);
-        } else {
-            console.error("Unknown error:", error.message);
-        }
         throw error;
     }
 }
+   
 
 ///////////////////////////////////// Delete User ////////////////////////////////////
 export async function deleteUser() {

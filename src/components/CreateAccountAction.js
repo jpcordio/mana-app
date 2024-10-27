@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { createUser } from "../services/User.service";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import 'font-awesome/css/font-awesome.min.css'; // Make sure to import Font Awesome CSS
+import 'font-awesome/css/font-awesome.min.css'; 
 
 function CreateAccountAction(props) { 
   const [emailAddress, setEmailAddress] = useState('');
@@ -12,6 +12,7 @@ function CreateAccountAction(props) {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [inputTypeConfirmPassword, setInputTypeConfirmPassword] = useState('password');
   const [typeRegistration, setTypeRegistration] = useState(false); // false for "Customer", true for "Business"
+  const [returnMessage, setReturnMessage] = useState('');
 
   const handleRegistrationType = (event) => {
     setTypeRegistration(event.target.value === "true");
@@ -37,10 +38,10 @@ function CreateAccountAction(props) {
     setName(e.target.value);
   }
 
-  function handleNickname(e) {
-    e.preventDefault();
-    setNickname(e.target.value);
-  }
+  // function handleNickname(e) {
+  //   e.preventDefault();
+  //   setNickname(e.target.value);
+  // }
 
   function togglePasswordVisibility(e) {
     e.preventDefault();
@@ -55,15 +56,26 @@ function CreateAccountAction(props) {
   async function handleRegister(e) {
     e.preventDefault();
     try {
-      await createUser(emailAddress, password, confirmPassword, name, typeRegistration);
-      window.location.href = "/login";
+      const response = await createUser(emailAddress, password, confirmPassword, name, typeRegistration);
+      if(response.status === true){
+        console.log(response);
+        window.location.href = `/login?response=Before the login, please check '${response.message}', an email has been sent containing instructions for confirming your account.`;
+      }else{
+        setReturnMessage(response.message);
+      }
     } catch (error) {
       if (error.response) {
         console.error("Error on the request:", error.response.data);
+        if (error.response.data.errors && error.response.data.errors.full_messages) {          
+          const errorMessages = error.response.data.errors.full_messages.join("<br />");
+          setReturnMessage(errorMessages);
+        } else {
+          setReturnMessage("Unknow error! Please contact the support team.");
+        }        
       } else {
-        console.error("Unknown error:", error.message);
+        setReturnMessage("Unknow error! Please contact the support team.");
+        setReturnMessage(error.message);
       }
-      alert('Error while registering the new user.');
     }
   }
 
@@ -71,6 +83,12 @@ function CreateAccountAction(props) {
     <div className="container mt-5">
       <div className="card p-4 shadow-lg" style={{ maxWidth: "500px", margin: "auto" }}>
         <h3 className="mb-4" style={{ color: "#143157" }}>Create Account</h3>
+        {returnMessage && (
+          <div
+            className="alert alert-warning text-center"
+            dangerouslySetInnerHTML={{ __html: returnMessage }}
+          ></div>
+        )}
         <form onSubmit={handleRegister}>
           <div className="mb-3">
             <label htmlFor="email" className="form-label">Email</label>

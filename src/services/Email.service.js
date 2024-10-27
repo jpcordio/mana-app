@@ -8,15 +8,15 @@ export async function resendVerificationEmail(emailAddress) {
         email: emailAddress
         });
         
-        alert('Email enviado com sucesso!');
-        return response.data.message;  
+        return { status: true, message: response.data.message }; 
 
     } catch (error) {
         if (error.response) {
-        console.error("Erro na requisição:", error.response.data);
+        console.error("Erro on the request:", error.response.data);
+        return { status: error.response.data.success, message: error.response.data.errors[0] };
         } else {
-        console.error("Erro desconhecido:", error.message);
+        console.error("Unkown error:", error.message);
         }
-        alert('Erro ao enviar email.');
+        throw error; 
     }
 }

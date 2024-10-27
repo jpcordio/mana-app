@@ -4,6 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 function ForgotPasswordAction(props) { 
   const [emailAddress, setEmailAddress] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
 
   function handleEmail(e) {
     e.preventDefault();
@@ -15,15 +16,24 @@ function ForgotPasswordAction(props) {
 
     try {
       const response = await forgetPassword(emailAddress);
-      alert(response);
-      window.location.href = "/login";
+
+      if(response.status === true){
+        window.location.href = `/login?response=${response.message}`;
+      }else{
+        setErrorMessage(response.message);
+      }
+      
     } catch (error) {
       if (error.response) {
         console.error("Error on the request:", error.response.data);
+        //errorMessage = error.response;
+        setErrorMessage(errorMessage);
+
       } else {
         console.error("Unknown Error:", error.message);
-      }
-      alert('Error to request a new password.');
+        //errorMessage = error.response;
+        setErrorMessage(errorMessage);
+      }      
     }
   }
 
@@ -31,7 +41,7 @@ function ForgotPasswordAction(props) {
     <div className="container mt-5">
       <div className="card p-4 shadow-lg" style={{ maxWidth: "400px", margin: "auto" }}>
         <h3 className="mb-4" style={{ color: "#143157" }}>Forgot Password</h3>
-
+        {errorMessage && <div className="alert alert-warning text-center">{errorMessage}</div>}
         <form onSubmit={handleForgetPassword}>
           <div className="mb-3">
             <label htmlFor="email" className="form-label">Email</label>

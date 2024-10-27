@@ -8,6 +8,7 @@ function ResetPasswordAction(props) {
   var [inputType, setInputType] = useState('password');
   var [confirmPassword, setConfirmPassword] = useState('');
   var [inputTypeConfirmPassword, setInputTypeConfirmPassword] = useState('password');
+  const [returnMessage, setReturnMessage] = useState('');
   
   const navigate = useNavigate();
 
@@ -52,77 +53,93 @@ function ResetPasswordAction(props) {
     const { accessToken, uid, client, token } = getUrlParams();
 
     try {
-      const response = await resetPassword(password, confirmPassword, accessToken, uid, client, token);     
-      alert(response);   
-      navigate('/login?password_reset_success=true'); 
+      const response = await resetPassword(password, confirmPassword, accessToken, uid, client, token);  
+ 
+      if(response.status === true){        
+         window.location.href = '/login?password_reset_success=true';
+      }else{
+        setReturnMessage(response.message);
+      }
     } catch (error) {
       if (error.response) {
         console.error("Error on the request:", error.response.data);
+        if (error.response.data.errors && error.response.data.errors.full_messages) {          
+          const errorMessages = error.response.data.errors.full_messages.join("<br />");
+          setReturnMessage(errorMessages);
+        } else {
+          setReturnMessage("Unknow error! Please contact the support team.");
+        }        
       } else {
-        console.error("Unknown Error:", error.message);
-      }  
-      alert('Error resetting the password.');
+        setReturnMessage("Unknow error! Please contact the support team.");
+        setReturnMessage(error.message);
+      }
     }
   }  
 
   return (
-    <div className="container mt-5">
-      <h2 className="text-center" style={{ color: "#143157" }}>Reset Your Password</h2>
+    <div className="container mt-5">      
       <div className="card p-4 shadow-lg" style={{ maxWidth: "500px", margin: "auto" }}>
         <form>
-        <div className="mb-3">
-            <label htmlFor="password" className="form-label">Password</label>
-            <div className="input-group">
-              <input 
-                type={inputType} 
-                id="password" 
-                name="password" 
-                className="form-control" 
-                value={password} 
-                onChange={handlePassword} 
-                required 
-              />
-              <div className="input-group-append">
-                <button 
-                  type="button" 
-                  className="btn" 
-                  style={{ backgroundColor: "#ff6600", color: "#fff" }}
-                  onClick={togglePasswordVisibility}
-                >
-                  {inputType === 'password' ? 
-                    <i className="fa fa-eye"></i> : 
-                    <i className="fa fa-eye-slash"></i>}
-                </button>
-              </div>
-            </div>
-          </div>
-
+          <h2 className="text-center" style={{ color: "#143157" }}>Reset Your Password</h2>
+          {returnMessage && (
+            <div
+              className="alert alert-warning text-center"
+              dangerouslySetInnerHTML={{ __html: returnMessage }}
+            ></div>
+          )}
           <div className="mb-3">
-            <label htmlFor="confirmPassword" className="form-label">Confirm Password</label>
-            <div className="input-group">
-              <input 
-                type={inputTypeConfirmPassword} 
-                id="confirmPassword" 
-                name="confirmPassword" 
-                className="form-control" 
-                value={confirmPassword} 
-                onChange={handleConfirmPassword} 
-                required 
-              />
-              <div className="input-group-append">
-                <button 
-                  type="button" 
-                  className="btn" 
-                  style={{ backgroundColor: "#ff6600", color: "#fff" }}
-                  onClick={toggleConfirmPasswordVisibility}
-                >
-                  {inputTypeConfirmPassword === 'password' ? 
-                    <i className="fa fa-eye"></i> : 
-                    <i className="fa fa-eye-slash"></i>}
-                </button>
+              <label htmlFor="password" className="form-label">Password</label>
+              <div className="input-group">
+                <input 
+                  type={inputType} 
+                  id="password" 
+                  name="password" 
+                  className="form-control" 
+                  value={password} 
+                  onChange={handlePassword} 
+                  required 
+                />
+                <div className="input-group-append">
+                  <button 
+                    type="button" 
+                    className="btn" 
+                    style={{ backgroundColor: "#ff6600", color: "#fff" }}
+                    onClick={togglePasswordVisibility}
+                  >
+                    {inputType === 'password' ? 
+                      <i className="fa fa-eye"></i> : 
+                      <i className="fa fa-eye-slash"></i>}
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
+
+            <div className="mb-3">
+              <label htmlFor="confirmPassword" className="form-label">Confirm Password</label>
+              <div className="input-group">
+                <input 
+                  type={inputTypeConfirmPassword} 
+                  id="confirmPassword" 
+                  name="confirmPassword" 
+                  className="form-control" 
+                  value={confirmPassword} 
+                  onChange={handleConfirmPassword} 
+                  required 
+                />
+                <div className="input-group-append">
+                  <button 
+                    type="button" 
+                    className="btn" 
+                    style={{ backgroundColor: "#ff6600", color: "#fff" }}
+                    onClick={toggleConfirmPasswordVisibility}
+                  >
+                    {inputTypeConfirmPassword === 'password' ? 
+                      <i className="fa fa-eye"></i> : 
+                      <i className="fa fa-eye-slash"></i>}
+                  </button>
+                </div>
+              </div>
+            </div>
 
           {/* <div className="mb-3">
             <label htmlFor="password" className="form-label">Password</label>

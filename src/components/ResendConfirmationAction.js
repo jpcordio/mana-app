@@ -4,6 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 function ResendConfirmationAction(props) { 
   const [emailAddress, setEmailAddress] = useState('');
+  const [returnMessage, setReturnMessage] = useState('');
 
   function handleEmail(e) {
     e.preventDefault();
@@ -13,9 +14,12 @@ function ResendConfirmationAction(props) {
   async function handleResend(e) {
     e.preventDefault();
     try {
-      await resendVerificationEmail(emailAddress);
-      alert("Verification email sent!");
-      // Você pode redirecionar o usuário ou limpar o campo de entrada aqui, se desejar.
+      const response = await resendVerificationEmail(emailAddress);
+      if(response.status === true){
+        window.location.href = `/login?response=${response.message}`;
+      }else{
+        setReturnMessage(response.message);
+      }
     } catch (error) {
       if (error.response) {
         console.error("Erro na requisição:", error.response.data);
@@ -30,7 +34,7 @@ function ResendConfirmationAction(props) {
     <div className="container mt-5">
       <div className="card p-4 shadow-lg" style={{ maxWidth: "400px", margin: "auto" }}>
         <h3 className="mb-4" style={{ color: "#143157" }}>Resend Email Confirmation</h3>
-
+        {returnMessage && <div className="alert alert-warning text-center">{returnMessage}</div>}
         <form onSubmit={handleResend}>
           <div className="mb-3">
             <label htmlFor="email" className="form-label">Email</label>

@@ -200,19 +200,21 @@ export async function forgetPassword(emailAddress) {
         email: uid
       });
     
-    return response.data.message;  
+    return { status: true, message: response.data.message };
 
   } catch (error) { 
 
     if (error.response) {
-      console.error("Error on the request:", error.response.data);
-    } else {
-      console.error("Unknown Erro:", error.message);
-    }
+      //console.error("Error on the request:", error.response.data);
+      return { status: error.response.data.success, message: error.response.data.errors[0] };
 
-    alert(error.response.data.errors[0]);
+    } else {
+      //console.error("Unknown Erro:", error.message);
+      return error.response.data.errors[0];
+    }
+    //alert();
     //return response.data.message; 
-    throw error;
+    //throw error;
   }
 }
 
@@ -246,7 +248,7 @@ export async function resetPassword(password, confirmPassword, accessToken, uid,
     const newClient = response.headers['client'];
     localStorage.setItem("client", newClient);
 
-    return response.data.message;
+    return { status: true, message: response.data.message };
 
   } catch (error) {
     if (error.response) {

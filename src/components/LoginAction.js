@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { login } from "../services/Authentication.service";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import 'font-awesome/css/font-awesome.min.css'; // Import Font Awesome CSS
+import 'font-awesome/css/font-awesome.min.css';
 
 function LoginAction(props) {
   const [emailAddress, setEmailAddress] = useState('');
@@ -9,6 +9,8 @@ function LoginAction(props) {
   const [inputType, setInputType] = useState('password');
   const [loginMessage, setLoginMessage] = useState('');  
   const [resetPwdMessage, setResetMessage] = useState('');
+  const [messageForgotPassword, setMessageForgotPassword] = useState(''); 
+  const [alertStatus, setMessageType] = useState('success')
 
   function handleEmail(e) {
     e.preventDefault();
@@ -37,30 +39,48 @@ function LoginAction(props) {
       } else {
         console.error("Unknown Error:", error.message);
       }
-      alert(error.response.data.errors[0]);
+      setLoginMessage(error.response.data.errors[0]);
+      setMessageType('danger')
     }
   }
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const accountConfirmationMessage = params.get('account_confirmation_success');
-    const resetPasswordMessage = params.get('password_reset_success');
-    
-    if (accountConfirmationMessage) { 
-      const confirmationMessage = accountConfirmationMessage === 'true' ? 
-        "Account confirmation was successful!" : 
-        "Account confirmation failed.";
-      
-      setLoginMessage(confirmationMessage);
-    }
+    const resetPasswordMessage = params.get('password_reset_success');    
+    const messageForgotPassword = params.get('response');
 
-    if (resetPasswordMessage) {  
-      const resetMessage = resetPasswordMessage === 'true' ? 
-        "Your password has been successfully updated." : 
-        "Password change failed!";
+    if (messageForgotPassword) { 
+      setMessageForgotPassword(messageForgotPassword);
+    }
+    
+    // Handle messages from Confirmation Account Process
+    if (accountConfirmationMessage) { 
+      let confirmationMessage; 
+      if (accountConfirmationMessage === 'true') {
+        confirmationMessage = "Account confirmation was successful!";
+        setMessageType('success');
+      } else {
+        confirmationMessage = "Account confirmation failed.";
+        setMessageType('danger');
+      }
+      
+      setResetMessage(confirmationMessage);
+    }
+   
+    // Handle messages from Reset Password Process
+    if (resetPasswordMessage) { 
+      let resetMessage; 
+      if (resetPasswordMessage === 'true') {
+        resetMessage = "Your password has been successfully updated.";
+        setMessageType('success');
+      } else {
+        resetMessage = "Password change failed!";
+        setMessageType('danger');
+      }
       
       setResetMessage(resetMessage);
-    }   
+    }
 
   }, []);
 
@@ -68,9 +88,9 @@ function LoginAction(props) {
     <div className="container mt-5">
       <div className="card p-4 shadow-lg" style={{ maxWidth: "400px", margin: "auto" }}>
         <h2 className="text-center mb-4" style={{ color: "#143157" }}>Login</h2>
-
-        {loginMessage && <div className="alert alert-success text-center">{loginMessage}</div>}
-        {resetPwdMessage && <div className="alert alert-info text-center">{resetPwdMessage}</div>}
+        {loginMessage && <div className={`alert alert-${alertStatus} text-center`}>{loginMessage}</div>}
+        {messageForgotPassword && <div className={`alert alert-${alertStatus} text-center`}>{messageForgotPassword}</div>}
+        {resetPwdMessage && <div className={`alert alert-${alertStatus} text-center`}>{resetPwdMessage}</div>}
         
         <form onSubmit={handleLogIn}>
           <div className="form-group">
