@@ -7,6 +7,7 @@ import ForgotPassword from "./views/ForgotPassword";
 import ResetPassword from "./views/ResetPassword";
 import ResendConfirmation from "./views/ResendConfirmation";
 import Account from "./views/Account";
+import DeleteAccount from './views/DeleteAccount';
 import Logout from "./components/Logout";
 import CreateArticle from "./views/CreateArticle";
 import Article from "./views/Article";
@@ -35,6 +36,8 @@ function App() {
             <Route path="resend-confirmation" element={<ResendConfirmation />} />
             <Route path="logout" element={<Logout />} />
             <Route path="account" element={<Account />} />
+            <Route path="delete-account" element={<DeleteAccount />} />
+            <Route path="profile" element={<Profile />} />
             <Route path="posts" element={<Article />} />
             <Route path="posts-feed" element={<ArticleFeed />} />
             <Route path="create-post" element={<CreateArticle />} />

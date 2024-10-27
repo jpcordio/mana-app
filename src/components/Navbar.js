@@ -9,7 +9,7 @@ function Navbar() {
   return (
     <nav className="navbar navbar-expand-lg" style={{ backgroundColor: "#143157" }}>
       <div className="container-fluid">
-        <Link to="#" className="navbar-brand orange">MANA</Link>
+        <span className="navbar-brand orange">MANA</span>
 
         <div className="collapse navbar-collapse">
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">

@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import Articles from "./Articles";
 import { isLogged } from "../services/Authentication.service";
 import { fetchArticleFeed } from "../services/Articles.service";
+import { Link } from "react-router-dom";
 
 function ArticleFeedAction({ user_Id }) {
   const [articles, setArticles] = useState([]);
@@ -31,7 +32,7 @@ function ArticleFeedAction({ user_Id }) {
         if (response.data.length > 0) {
           setArticles(response.data);         
         } else {
-          setError("No posts found.");
+          setError(false);
         }
       } catch (err) {
         setError("Erro when trying to find posts.");
@@ -43,36 +44,61 @@ function ArticleFeedAction({ user_Id }) {
     fetchArticles();
   }, [user_Id]);
 
-  if (loading) {
-    
-    return <p>Carregando...</p>;
+  if (loading) {    
+    return <p>Loading...</p>;
   }
 
-  if (error) {
-    return <p>{error}</p>;
-  }
+  // if (error) {
+  //   return <p>{error}</p>;
+  // }
 
-  return (
-    <div className="container mt-5">
-      <div className="home">
-        <h1 className="text-center mb-4">Posts Feed</h1>
-        <ul className="list-unstyled">
-          {articles.map((article, index) => (
-            <li key={index} className="mb-4">
-              <div className="card shadow-sm">
-                <div className="card-body">
-                  <h5 className="card-title">{article.title}</h5>
-                  <p className="card-text">{article.body}</p>
-                  {/* <small className="text-muted">Author ID: {article.user.id}</small> */}
-                  <small className="text-muted">Author: <a href={`http://localhost:3001/profile?id=${article.user.id}&name=${article.user.name}`}>{article.user.name}</a></small>
-                </div>
-              </div>
-            </li>
-          ))}
-        </ul>
+  if(error === false){
+
+    return (
+      <div className="container mt-5">
+        <div className="home">
+          <h1 className="text-center mb-4">Posts Feed</h1>
+          <div className="row">
+            <div className="col-md-12 text-center">
+            You should follow some companies to see Posts.
+            </div>
+            <div className="text-center mt-3">
+              <Link to="/companies-list" className="btn btn-warning">
+              Find Companies
+              </Link>   
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
-);
+    );
+
+  }else {   
+
+    return (
+      <div className="container mt-5">
+        <div className="home">
+          <h1 className="text-center mb-4">Posts Feed</h1>
+          <ul className="list-unstyled">
+            {articles.map((article, index) => (
+              <li key={index} className="mb-4">
+                <div className="card shadow-sm">
+                  <div className="card-body">
+                    <h5 className="card-title">{article.title}</h5>
+                    <p className="card-text">{article.body}</p>
+                    {/* <small className="text-muted">Author ID: {article.user.id}</small> */}
+                    <small className="text-muted">Author: <a href={`http://localhost:3001/profile?id=${article.user.id}&name=${article.user.name}`}>{article.user.name}</a></small>
+                  </div>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    );
+
+  }
+
+  
 }
 
 export default ArticleFeedAction;

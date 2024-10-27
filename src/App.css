@@ -41,6 +41,10 @@
   background-color: #143157 !important;
 }
 
+.nodecoration{
+  text-decoration: none;
+}
+
 .orange{
   color:#ff6600;
 }
@@ -49,6 +53,10 @@
   color: #ffffff;
   background-color:#ff7d27;;
   border-color: #ff7d27;
+}
+
+.btn-danger:hover{
+  color: #ffffff !important;
 }
 
 .btn-primary{
@@ -142,3 +150,17 @@ ul, li, ol {
   padding: 5;            /* Remove o padding padrão */
 }
 
+.navbar-nav .nav-item .nav-link {
+  color: white;
+  transition: color 0.3s ease;
+}
+
+.navbar-nav .nav-item .nav-link:hover, a:hover {
+  color: #ffa366 !important; 
+}
+
+input[readonly] {
+  background-color: #f8f9fa; /* Um fundo sutilmente mais claro */
+  color: #6c757d; /* Cor de texto mais suave */
+  border-color: #ced4da; /* Ajuste a borda se desejar */
+}

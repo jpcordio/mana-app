@@ -8,6 +8,7 @@ function Home() {
       <div className="text-center mb-5">
         <img src={logo} alt="MANA Logo" className="img-fluid mb-4" />
         <h1>Welcome to MANA</h1>
+        <h5>Connecting companies and customers for lasting relationships!</h5>
         <p>
           MANA is an innovative platform that strengthens the connection between customers and their favorite places. 
           We offer an easy way to follow and connect with businesses, receiving updates and discounts firsthand.
@@ -48,11 +49,11 @@ function Home() {
         <Col md={4}>
           <Card className="mb-4">
             <Card.Body>
-              <Card.Title>Posts (For Companies Only)</Card.Title>
+              <Card.Title>Posts (For Customers Only)</Card.Title>
               <Card.Text>
                 Stay updated on news and promotions.
               </Card.Text>
-              <Card.Link href="/posts">View Posts</Card.Link>
+              <Card.Link href="/posts-feed">View Posts</Card.Link>
             </Card.Body>
           </Card>
         </Col>

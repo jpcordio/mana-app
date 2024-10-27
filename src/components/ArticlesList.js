@@ -51,12 +51,13 @@ function ArticleList({ user_Id }) {
 
   if (loading) {
     
-    return <p>Carregando...</p>;
+    return <p>Loading...</p>;
   }
 
-  if (error) {
-    return <p>{error}</p>;
-  }
+  // Commented as this will block new companies to create posts
+  // if (error) {
+  //   return <p>{error}</p>;
+  // }
 
   return (
     <div className="container mt-5">
