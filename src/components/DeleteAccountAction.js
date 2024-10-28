@@ -16,9 +16,7 @@ function DeleteAccountAction(props) {
 
       const response = await deleteUser(accessToken, emailAddress, client);
 
-      alert(response);
-
-      window.location.href = "/login";
+      window.location.href = `/login?delete_account=${response}`;
   
     } catch (error) {
       if (error.response) {

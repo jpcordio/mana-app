@@ -2,16 +2,16 @@ import { useState, useEffect } from "react";
 import { fetchArticleId, updateArticle } from "../services/Articles.service";
 import { isCompany, isLogged } from "../services/Authentication.service";
 import { Link } from "react-router-dom";
-import { Spinner } from "react-bootstrap";
+import { Spinner, Container, Row, Col, Form, Button  } from "react-bootstrap";
 
 function EditArticleAction() { 
     ////////////////////////////////////    Variables   ////////////////////////////////////
-    const [articleId, setArticleId] = useState(''); // ID do artigo
-    const [userId, setUserId] = useState(''); // ID do usuário
-    const [title, setTitle] = useState(''); // Título do artigo
-    const [body, setBody] = useState(''); // Corpo do artigo
-    const [imageUrl, setImageUrl] = useState(''); // URL da imagem
-    const [loading, setLoading] = useState(true); // Controle de loading
+    const [articleId, setArticleId] = useState(''); 
+    const [userId, setUserId] = useState(''); 
+    const [title, setTitle] = useState(''); 
+    const [body, setBody] = useState(''); 
+    //const [imageUrl, setImageUrl] = useState(''); // URL of the image when I get it implemented
+    const [loading, setLoading] = useState(true); // loading control
 
     ////////////////////////////////////    Handle fields    ////////////////////////////////////
     function handleTitle(e) {
@@ -31,51 +31,49 @@ function EditArticleAction() {
             const articleIdParam = params.get('articleId');            
             const userIdParam = params.get('userId');
           
-            // Atualizando o estado do userId e articleId
+            // Update the the userId e articleId
             setArticleId(articleIdParam);
-            setUserId(userIdParam);
+            setUserId(userIdParam);            
 
             // Função para buscar o artigo
             async function fetchAndSetArticleId() {
                 try {
-                    const articleData = await fetchArticleId(articleIdParam); // Busca o artigo por ID
+                    const articleData = await fetchArticleId(articleIdParam); 
                     const article = articleData.data;
 
                     if (article) {
-                        setTitle(article.title); // Atualiza o título no estado
-                        setBody(article.body); // Atualiza o corpo no estado
+                        setTitle(article.title); 
+                        setBody(article.body); 
                     }
                 } catch (error) {
                     if (error.response) {
-                        console.error("Erro na requisição:", error.response.data);
+                        console.error("Error on the request:", error.response.data);
                     } else {
-                        console.error("Erro desconhecido:", error.message);
+                        console.error("Unknown Error:", error.message);
                     }
-                    alert('Erro, não foi possível obter o artigo.');
+                    alert('Error, not possible to load the articles.');
                 } finally {
-                    setLoading(false); // Finaliza o carregamento
+                    setLoading(false);
                 }
             }
-
-            fetchAndSetArticleId(); // Executa a função ao montar o componente
+            fetchAndSetArticleId(); 
         }            
-    }, []);
+    }, [userId]);
 
     ///////////////////////////////////// Handles the Update of a Article ////////////////////////////////////
     async function handleUpdateArticle(e) {
         e.preventDefault();
 
         try {
-            await updateArticle(articleId, title, body, imageUrl);
-            alert("Posted edited successfully.");
-            window.location.href = "/posts";
+            await updateArticle(articleId, title, body); //add imageUrl when implemented
+            window.location.href = "/posts?response_edit=true";
         } catch (error) {
             if (error.response) {
                 console.error("Erro on the request:", error.response.data);
             } else {
                 console.error("Unkown Error:", error.message);
             }
-            alert('Error when editing the post.');
+            window.location.href = "/posts?response_edit=false";
         }
     }
 
@@ -88,45 +86,44 @@ function EditArticleAction() {
                 </Spinner>
                 </div>
             ) : (
-            <div>
-                <h2 className="text-center mb-4">Update Article</h2>
-                <form>
-                    <div className="mb-3">
-                    <label htmlFor="title" className="form-label">Title</label>
-                    <input 
-                        type="text" 
-                        id="title" 
-                        name="title" 
-                        className="form-control" 
-                        value={title} 
-                        onChange={handleTitle} 
-                        required 
-                    />
-                    </div>
+                <Container>
+                <Row className="justify-content-center">
+                  <Col md={8}>
+                    <h2 className="text-center mb-4">Update Article</h2>
+                    <Form onSubmit={handleUpdateArticle}>
+                        <Form.Group controlId="title">
+                            <Form.Label>Title</Form.Label>
+                            <Form.Control
+                                type="text"
+                                value={title}
+                                onChange={handleTitle}
+                                required
+                            />
+                        </Form.Group>
 
-                    <div className="mb-3">
-                    <label htmlFor="body" className="form-label">Content</label>
-                    <textarea 
-                        id="body" 
-                        name="body" 
-                        rows="4" 
-                        className="form-control" 
-                        value={body} 
-                        onChange={handleBody} 
-                        required 
-                    />
-                    </div>
+                        <Form.Group controlId="body">
+                            <Form.Label>Content</Form.Label>
+                            <Form.Control
+                                as="textarea"
+                                rows={4}
+                                value={body}
+                                onChange={handleBody}
+                                required
+                            />
+                        </Form.Group>
 
-                    <div className="d-flex justify-content-between">
-                    <button type="button" className="btn btn-primary" onClick={handleUpdateArticle}>
-                        Save
-                    </button>
-                    <Link to="/posts" className="btn btn-warning">
-                        Back
-                    </Link>
-                    </div>
-                </form>
-            </div>
+                        <div className="d-flex justify-content-between mt-3">
+                            <Button type="submit" className="btn btn-primary">
+                                Save
+                            </Button>
+                            <Link to="/posts" className="btn btn-warning">
+                                Back
+                            </Link>
+                        </div>
+                    </Form>
+                  </Col>
+                </Row>
+              </Container>
         )}
         </div>
     );

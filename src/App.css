@@ -49,19 +49,31 @@
   color:#ff6600;
 }
 
-.btn-warning{
-  color: #ffffff;
-  background-color:#ff7d27;;
-  border-color: #ff7d27;
+.eye-button{
+  background-Color: #ff6600 !important; 
+  color: #ffffff !important;
+  border-color: #ff6600 !important;
+  transition: background-color 0.3s ease;
 }
 
-.btn-danger:hover{
-  color: #ffffff !important;
+.eye-button:active {
+  background-color: #cc5200;
+  transform: scale(0.95);
+}
+
+.btn-warning{
+  color: #ffffff;
+  background-color:#ff7d27;
+  border-color: #ff7d27;
 }
 
 .btn-primary{
   background-color:#143157;
   border-color: #143157;
+}
+
+.btn-primary:hover, .btn-warning:hover, .btn-danger:hover{
+  color: #ffffff !important;
 }
 
 .btn-primary:HOVER{
@@ -163,4 +175,20 @@ input[readonly] {
   background-color: #f8f9fa; /* Um fundo sutilmente mais claro */
   color: #6c757d; /* Cor de texto mais suave */
   border-color: #ced4da; /* Ajuste a borda se desejar */
+}
+
+.close-button {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: none;
+  border: none;
+  color: inherit; /* herda a cor da borda do alerta */
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.close-button:focus {
+  outline: none; /* remove o contorno do botão ao focar */
 }

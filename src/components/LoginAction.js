@@ -10,6 +10,7 @@ function LoginAction(props) {
   const [loginMessage, setLoginMessage] = useState('');  
   const [resetPwdMessage, setResetMessage] = useState('');
   const [messageForgotPassword, setMessageForgotPassword] = useState(''); 
+  const [messageDeleteAccount, setMessageDeleteAccount] = useState(''); 
   const [alertStatus, setMessageType] = useState('success')
 
   function handleEmail(e) {
@@ -49,9 +50,16 @@ function LoginAction(props) {
     const accountConfirmationMessage = params.get('account_confirmation_success');
     const resetPasswordMessage = params.get('password_reset_success');    
     const messageForgotPassword = params.get('response');
+    const messageDeleteAccount = params.get('delete_account');
+    
+    if(messageDeleteAccount){
+      setMessageDeleteAccount(messageDeleteAccount);
+      setMessageType('success');
+    }
 
     if (messageForgotPassword) { 
       setMessageForgotPassword(messageForgotPassword);
+      setMessageType('success');
     }
     
     // Handle messages from Confirmation Account Process
@@ -90,6 +98,7 @@ function LoginAction(props) {
         <h2 className="text-center mb-4" style={{ color: "#143157" }}>Login</h2>
         {loginMessage && <div className={`alert alert-${alertStatus} text-center`}>{loginMessage}</div>}
         {messageForgotPassword && <div className={`alert alert-${alertStatus} text-center`}>{messageForgotPassword}</div>}
+        {messageDeleteAccount && <div className={`alert alert-${alertStatus} text-center`}>{messageDeleteAccount}</div>}
         {resetPwdMessage && <div className={`alert alert-${alertStatus} text-center`}>{resetPwdMessage}</div>}
         
         <form onSubmit={handleLogIn}>

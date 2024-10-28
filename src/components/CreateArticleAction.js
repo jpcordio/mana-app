@@ -16,7 +16,7 @@ function CreateArticleAction() {
     ////////////////////////////////////    Variables   ////////////////////////////////////
     const [title, setTitle] = useState('');
     const [body, setBody] = useState('');
-    const [imageUrl, setImageUrl] = useState('');
+    //const [imageUrl, setImageUrl] = useState(''); //Use this when I implement the image for company
     const [errorMessage, setErrorMessage] = useState('');
 
     ////////////////////////////////////    handle fields    ////////////////////////////////////
@@ -30,19 +30,18 @@ function CreateArticleAction() {
         setBody(e.target.value);
     }
 
-    function handleImageUrl(e) {
-        e.preventDefault();
-        setImageUrl(e.target.value);
-    }
+    // function handleImageUrl(e) {
+    //     e.preventDefault();
+    //     setImageUrl(e.target.value);
+    // }
 
-    ///////////////////////////////////// Handles the Registration of an Article ////////////////////////////////////
+    ///////////////////////////////////// Handles the Create an Article ////////////////////////////////////
     async function handleCreateArticle(e) {
         e.preventDefault();
 
         try {
-            await createArticle(title, body, imageUrl);
-            alert("Post created successfully.");
-            window.location.href = "/posts";
+            await createArticle(title, body); // Add imageUrl when it is implemented
+            window.location.href = "/posts?response_create=true";
         } catch (error) {
             if (error.response) {
                 console.error("Erro on the request:", error.response.data);

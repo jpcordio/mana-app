@@ -41,6 +41,15 @@ function AccountAction(props) {
   var [website, setWebsite] = useState(localStorage.getItem("website") || "");
   var [emailProfile, setEmailProfile] = useState(localStorage.getItem("emailProfile") || "");
 
+
+  var [alertType, setAlertType] = useState('success');
+  var [returnUpdateUserMessage, setReturnUpdateUserMessage] = useState('');
+  var [returnUpdateProfileMessage, setReturnUpdateProfileMessage] = useState('');
+  var [returnCreateProfileMessage, setReturnCreateProfileMessage] = useState('');
+  var [returnUpdatePassword, setReturnUpdatePassword] = useState('');
+  
+  
+
   //////////////////////////////////// Set Functions ////////////////////////////////////
   // handle Email
   function handleEmail(e) {
@@ -84,7 +93,6 @@ function AccountAction(props) {
     setHaveProfile(e.target.value);
   }
 
-
   // handle address1
   function handleAddress1(e) {
     e.preventDefault();
@@ -97,53 +105,53 @@ function AccountAction(props) {
     setAddress2(e.target.value);
   }
 
-    // handle City
-    function handleCity(e) {
-      e.preventDefault();
-      setCity(e.target.value);
-    }
-  
-    // handle County
-    function handleCounty(e) {
-      e.preventDefault();
-      setCounty(e.target.value);
-    }
+  // handle City
+  function handleCity(e) {
+    e.preventDefault();
+    setCity(e.target.value);
+  }
 
-    // handle Postcode
-    function handlePostcode(e) {
-      e.preventDefault();
-      setPostcode(e.target.value);
-    }
-  
-    // handle Country
-    function handleCountry(e) {
-      e.preventDefault();
-      setCountry(e.target.value);
-    }
+  // handle County
+  function handleCounty(e) {
+    e.preventDefault();
+    setCounty(e.target.value);
+  }
 
-    // handle Phone
-    function handlePhone(e) {
-      e.preventDefault();
-      setPhone(e.target.value);
-    }
+  // handle Postcode
+  function handlePostcode(e) {
+    e.preventDefault();
+    setPostcode(e.target.value);
+  }
 
-    // handle Mobile
-    function handleMobile(e) {
-      e.preventDefault();
-      setMobile(e.target.value);
-    }
+  // handle Country
+  function handleCountry(e) {
+    e.preventDefault();
+    setCountry(e.target.value);
+  }
 
-    // handle Website
-    function handleWebsite(e) {
-      e.preventDefault();
-      setWebsite(e.target.value);
-    }
+  // handle Phone
+  function handlePhone(e) {
+    e.preventDefault();
+    setPhone(e.target.value);
+  }
 
-    // handle Emailprofile
-    function handleEmailProfile(e) {
-      e.preventDefault();
-      setEmailProfile(e.target.value);
-    }
+  // handle Mobile
+  function handleMobile(e) {
+    e.preventDefault();
+    setMobile(e.target.value);
+  }
+
+  // handle Website
+  function handleWebsite(e) {
+    e.preventDefault();
+    setWebsite(e.target.value);
+  }
+
+  // handle Emailprofile
+  function handleEmailProfile(e) {
+    e.preventDefault();
+    setEmailProfile(e.target.value);
+  }
 
   //////////////////////////////////// handle the "show/hide" password and confirm password ////////////////////////////////////
   
@@ -168,29 +176,38 @@ function AccountAction(props) {
   ///////////////////////////////////// Handles the Update of an User ////////////////////////////////////
   async function handleUpdate(e) {
     e.preventDefault();
-  
+    
     try {
-
       const response = await updateUser(name);
-
-      if(response){
-        console.log("user updated.")
-      }
-
-      //window.location.href = "/login";
-  
-    } catch (error) {
-      if (error.response) {
-        // Erro na resposta da API
-        console.error("Erro na requisição:", error.response.data);
+      if (response) {
+          setAlertType('success');
+          setReturnUpdateUserMessage("User updated successfully.");
       } else {
-        // Erro desconhecido
-        console.error("Erro desconhecido:", error.message);
+          // Se a resposta não for válida, trate o caso
+          setReturnUpdateUserMessage("Update failed.");
       }
-  
-      alert('Erro ao atualizar o usuário.');
-    }
+  } catch (error) {
+      if (error.response) {
+          console.error("Erro na requisição:", error.response.data);
+          
+          // Verifica se a resposta contém erros
+          if (error.response.data.errors) {
+              // Acessa as mensagens de erro completas
+              const errorMessages = error.response.data.errors.full_messages || ["Unknown error."];
+              
+              // Define a mensagem para o estado
+              setReturnUpdateUserMessage(errorMessages.join(", "));
+          } else {
+              // Mensagem padrão se não houver mensagens específicas
+              setReturnUpdateUserMessage("Unknown error.");
+          }
+      } else {
+          // Para erros desconhecidos
+          console.error("Erro desconhecido:", error.message);
+          setReturnUpdateUserMessage(error.message); // Assegure-se que seja uma string
+      }
   }
+}
 
   ///////////////////////////////////// Handles the Update Password ////////////////////////////////////
   async function handleUpdatePassword(e) {
@@ -200,18 +217,14 @@ function AccountAction(props) {
 
       const response = await updatePassword(currentPassword, password, confirmPassword);
 
-      alert(response);
-
-      //window.location.href = "/login";
+      setReturnUpdatePassword("Password updated successfully!");
+        setAlertType('success');
   
     } catch (error) {
       if (error.response) {
-        // Erro na resposta da API
-        console.error("Erro na requisição:", error.response.data);
-      } else {
-        // Erro desconhecido
-        console.error("Erro desconhecido:", error.message);
-      }
+        setReturnUpdatePassword(error.response.data.errors.full_messages[0]);
+        setAlertType('warning');
+      } 
     }
   }
 
@@ -263,9 +276,9 @@ function AccountAction(props) {
               setMobile(data.mobile ?? '');
               setWebsite(data.website ?? '');
               setEmailProfile(data.email ?? '');
+              setHaveProfile(true);
             }
           } catch (error) {
-            // ... (Tratamento de erro permanece o mesmo)
             setAddress1('');
             setAddress2('');
             setCity('');
@@ -276,6 +289,7 @@ function AccountAction(props) {
             setMobile('');
             setWebsite('');
             setEmailProfile('');
+            setHaveProfile(false);
           }
         }
         callProfile();
@@ -287,10 +301,10 @@ function AccountAction(props) {
       e.preventDefault();
       try {
         const response = await updateProfile(id, address1, address2, city, county, postcode, country, phone, mobile, website, emailProfile);
-        console.error("Profile updated succefuly! " + response);
+        setReturnUpdateProfileMessage("Profile updated succefuly!");
       } catch (error) {
-        // ... (Tratamento de erro permanece o mesmo)
-        alert('Erro while updating the profile.');
+        setReturnUpdateProfileMessage("Erro while updating the profile.");
+        setAlertType('warning');
       }
     }
   
@@ -300,19 +314,19 @@ function AccountAction(props) {
       try {
         const response = await createProfile(id, address1, address2, city, county, postcode, country, phone, mobile, website, emailProfile);
         if (response) {
-          console.log("profile created.")
+          setReturnUpdateProfileMessage("Profile created succefuly!");
           setHaveProfile(true);
         }
-      } catch (error) {
-        // ... (Tratamento de erro permanece o mesmo)
-        alert('Error when trying to create the profile.');
+      } catch (error) {        
+        setReturnUpdateProfileMessage("Error when trying to create the profile.");
+        setAlertType('warning');
       }
     }
   
     ///////////////////////////////////// Form ////////////////////////////////////
     return (
       
-      <Container className="mt-5">
+      <Container className="mt-5 mb-5">
         <div className="text-center">
           <h1>User Settings</h1>
         </div>       
@@ -320,223 +334,287 @@ function AccountAction(props) {
           <Row>
             <Col md={12}>
               <h4>Personal Data</h4>
-              <Form.Group controlId="email">
-                <Form.Label>Email</Form.Label>
-                <Form.Control
-                  type="text"
-                  value={emailAddress}
-                  readOnly
-                  onChange={handleEmail}
-                />
-              </Form.Group>
-              <Form.Group controlId="name">
-                <Form.Label>Name</Form.Label>
-                <Form.Control
-                  type="text"
-                  value={name}
-                  onChange={handleName}
-                />
-              </Form.Group>
-              <div className="text-center mt-3">
-                <Button className="btn btn-primary" onClick={handleUpdate}>
+              {returnUpdateUserMessage && <div className={`alert alert-${alertType} text-center`}>{returnUpdateUserMessage}</div>}
+              <Form onSubmit={handleUpdate}>
+                <Form.Group controlId="email">
+                  <Form.Label>Email</Form.Label>
+                  <Form.Control
+                    type="text"
+                    value={emailAddress}
+                    readOnly
+                    onChange={handleEmail}
+                  />
+                </Form.Group>
+                <Form.Group controlId="name">
+                  <Form.Label>Name</Form.Label>
+                  <Form.Control
+                    type="text"
+                    value={name}
+                    onChange={handleName}
+                    required 
+                    isInvalid={!name}
+                  />
+                </Form.Group>
+                <div className="text-center mt-3">
+                <Button type="submit" className="btn btn-primary">
                   Update User
                 </Button>
-              </div>
+                </div>
+              </Form>
             </Col>   
           </Row> 
         </Container>
         {isCompany() && (
-          <div className="container">
-            <div className="row">             
-                <h4>Edit Profile</h4>
-                <div className="col-md-6">
-                  <div className="form-group">
-                    <label htmlFor="address1">Address 1</label>
-                    <input type="text" id="address1" name="address1" className="form-control" value={address1} onChange={handleAddress1} />
-                  </div>
-                </div>
-                <div className="col-md-6">
-                  <div className="form-group">
-                    <label htmlFor="address2">Address 2</label>
-                    <input type="text" id="address2" name="address2" className="form-control" value={address2} onChange={handleAddress2} />
-                  </div>
-                </div>               
-
-                <div className="col-md-6">
-                  <div className="form-group">
-                    <label htmlFor="city">City</label>
-                    <input type="text" id="city" name="city" className="form-control" value={city} onChange={handleCity} />
-                  </div>
-                </div>
-                <div className="col-md-6">
-                  <div className="form-group">
-                    <label htmlFor="county">County</label>
-                    <input type="text" id="county" name="county" className="form-control" value={county} onChange={handleCounty} />
-                  </div>
-                </div>
-                <div className="col-md-6">
-                  <div className="form-group">
-                    <label htmlFor="postcode">Postcode</label>
-                    <input type="text" id="postcode" name="postcode" className="form-control" value={postcode} onChange={handlePostcode} />
-                  </div>
-                </div>
-                <div className="col-md-6">
-                  <div className="form-group">
-                    <label htmlFor="country">Country</label>
-                    <input type="text" id="country" name="country" className="form-control" value={country} onChange={handleCountry} />
-                  </div>
-                </div>
-                <div className="col-md-6">
-                  <div className="form-group">
-                    <label htmlFor="phone">Phone</label>
-                    <input type="text" id="phone" name="phone" className="form-control" value={phone} onChange={handlePhone} />
-                  </div>
-                </div>
-                <div className="col-md-6">
-                  <div className="form-group">
-                    <label htmlFor="mobile">Mobile</label>
-                    <input type="text" id="mobile" name="mobile" className="form-control" value={mobile} onChange={handleMobile} />
-                  </div>
-                </div>
-                <div className="col-md-6">
-                  <div className="form-group">
-                    <label htmlFor="website">Website</label>
-                    <input type="text" id="website" name="website" className="form-control" value={website} onChange={handleWebsite} />
-                  </div>
-                </div>
-                <div className="col-md-6">
-                  <div className="form-group">
-                    <label htmlFor="emailprofile">Email</label>
-                    <input type="email" id="emailprofile" name="emailprofile" className="form-control" value={emailProfile} onChange={handleEmailProfile} />
-                  </div>
-                </div>
-                <br />
-                <div className="text-center mt-3">
-                  <button className="btn btn-success" onClick={!haveProfile ? handleProfileUpdate : handleProfileCreate}>
-                    {!haveProfile ? "Update Profile" : "Create Profile"}
-                  </button>
-                </div>
-              </div>
-            </div>          
+          <Container className="mt-5 mb-5">
+          <Row>
+            <Col md={12}>
+              <h4>Edit Profile</h4>
+              {returnUpdateProfileMessage && <div className={`alert alert-${alertType} text-center`}>{returnUpdateProfileMessage}</div>}
+              {returnCreateProfileMessage && <div className={`alert alert-${alertType} text-center`}>{returnCreateProfileMessage}</div>}
+            </Col>
+          </Row>
+          <Row>
+            <Col md={6}>
+              <Form.Group controlId="address1">
+                <Form.Label>Address 1</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="address1"
+                  value={address1}
+                  onChange={handleAddress1}
+                />
+              </Form.Group>
+            </Col>
+            <Col md={6}>
+              <Form.Group controlId="address2">
+                <Form.Label>Address 2</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="address2"
+                  value={address2}
+                  onChange={handleAddress2}
+                />
+              </Form.Group>
+            </Col>
+            <Col md={6}>
+              <Form.Group controlId="city">
+                <Form.Label>City</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="city"
+                  value={city}
+                  onChange={handleCity}
+                />
+              </Form.Group>
+            </Col>
+            <Col md={6}>
+              <Form.Group controlId="county">
+                <Form.Label>County</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="county"
+                  value={county}
+                  onChange={handleCounty}
+                />
+              </Form.Group>
+            </Col>
+            <Col md={6}>
+              <Form.Group controlId="postcode">
+                <Form.Label>Postcode</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="postcode"
+                  value={postcode}
+                  onChange={handlePostcode}
+                />
+              </Form.Group>
+            </Col>
+            <Col md={6}>
+              <Form.Group controlId="country">
+                <Form.Label>Country</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="country"
+                  value={country}
+                  onChange={handleCountry}
+                />
+              </Form.Group>
+            </Col>
+            <Col md={6}>
+              <Form.Group controlId="phone">
+                <Form.Label>Phone</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="phone"
+                  value={phone}
+                  onChange={handlePhone}
+                />
+              </Form.Group>
+            </Col>
+            <Col md={6}>
+              <Form.Group controlId="mobile">
+                <Form.Label>Mobile</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="mobile"
+                  value={mobile}
+                  onChange={handleMobile}
+                />
+              </Form.Group>
+            </Col>
+            <Col md={6}>
+              <Form.Group controlId="website">
+                <Form.Label>Website</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="website"
+                  value={website}
+                  onChange={handleWebsite}
+                />
+              </Form.Group>
+            </Col>
+            <Col md={6}>
+              <Form.Group controlId="emailprofile">
+                <Form.Label>Email</Form.Label>
+                <Form.Control
+                  type="email"
+                  name="emailprofile"
+                  value={emailProfile}
+                  onChange={handleEmailProfile}
+                />
+              </Form.Group>
+            </Col>
+          </Row>
+          <Row>
+            <Col className="text-center mt-3">
+              <Button
+                variant="success"
+                onClick={haveProfile ? handleProfileUpdate : handleProfileCreate}
+              >
+                {haveProfile ? "Update Profile" : "Create Profile"}
+              </Button>
+            </Col>
+          </Row>
+        </Container>         
         )}
-        <div className="container">
-          <div className="row">     
-            <div className="mb-4">
+        
+        
+        <Container className="mt-5 mb-5">
+          <Row className="mb-4">
+            <Col>
               <h4>Update Password</h4>
-              <div className="form-group">            
-                {/* <input type={inputTypeCurrentPassword} id="currentPassword" name="currentPassword" className="form-control" value={currentPassword} onChange={handleCurrentPassword} />
-                <button className="btn btn-outline-secondary" onClick={() => setInputTypeCurrentPassword(inputTypeCurrentPassword === 'password' ? 'text' : 'password')}>{inputTypeCurrentPassword === 'password' ? 'Show' : 'Hide'}</button> */}
-                <div className="form-group">
-                  <label htmlFor="currentPassword" style={{ color: "#143157" }}>Current Password</label>
-                  <div className="input-group">
-                    <input 
-                      type={inputTypeCurrentPassword} 
-                      id="currentPassword" 
-                      name="currentPassword" 
-                      className="form-control" 
-                      value={currentPassword} 
-                      onChange={handleCurrentPassword} 
-                      required 
-                    />                    
-                    <div className="input-group-append">                      
-                        <button 
-                          type="button" 
-                          className="btn" 
-                          style={{ backgroundColor: "#ff6600", color: "#fff" }}
-                          onClick={toggleCurrentPasswordVisibility}
-                        >
-                          {inputTypeCurrentPassword === 'password' ? 
-                            <i className="fa fa-eye"></i> : 
-                            <i className="fa fa-eye-slash"></i>}
-                        </button>                      
-                    </div>
+              {returnUpdatePassword && <div className={`alert alert-${alertType} text-center`}>{returnUpdatePassword}</div>}
+            </Col>
+          </Row>
+
+          <Row>
+            <Col md={12}>
+              <Form.Group controlId="currentPassword">
+                <Form.Label style={{ color: "#143157" }}>Current Password</Form.Label>
+                <div className="input-group">
+                  <Form.Control
+                    type={inputTypeCurrentPassword}
+                    value={currentPassword}
+                    onChange={handleCurrentPassword}
+                    required
+                  />
+                  <div className="input-group-append">
+                    <Button
+                      type="button"                      
+                      className = "eye-button" 
+                      onClick={toggleCurrentPasswordVisibility}
+                    >
+                      {inputTypeCurrentPassword === 'password' ? (
+                        <i className="fa fa-eye"></i>
+                      ) : (
+                        <i className="fa fa-eye-slash"></i>
+                      )}
+                    </Button>
                   </div>
                 </div>
-              </div>
-              <div className="form-group">           
-                {/* <input type={inputType} id="password" name="password" className="form-control" value={password} onChange={handlePassword} />
-                <button className="btn btn-outline-secondary" onClick={() => setInputType(inputType === 'password' ? 'text' : 'password')}>{inputType === 'password' ? 'Show' : 'Hide'}</button> */}
-                <div className="form-group">
-                  <label htmlFor="password" style={{ color: "#143157" }}>New Password</label>
-                  <div className="input-group">
-                    <input 
-                      type={inputType} 
-                      id="password" 
-                      name="password" 
-                      className="form-control" 
-                      value={password} 
-                      onChange={handlePassword} 
-                      required 
-                    />
-                    <div className="input-group-append">
-                      <button 
-                        type="button" 
-                        className="btn" 
-                        style={{ backgroundColor: "#ff6600", color: "#fff" }}
-                        onClick={togglePasswordVisibility}
-                      >
-                        {inputType === 'password' ? 
-                          <i className="fa fa-eye"></i> : 
-                          <i className="fa fa-eye-slash"></i>}
-                      </button>
-                    </div>
+              </Form.Group>
+            </Col>
+          </Row>
+          <Row>
+            <Col md={6}>
+              <Form.Group controlId="password">
+                <Form.Label style={{ color: "#143157" }}>New Password</Form.Label>
+                <div className="input-group">
+                  <Form.Control
+                    type={inputType}
+                    value={password}
+                    onChange={handlePassword}
+                    required
+                  />
+                  <div className="input-group-append">
+                    <Button
+                      type="button"
+                      className = "eye-button"
+                      onClick={togglePasswordVisibility}
+                    >
+                      {inputType === 'password' ? (
+                        <i className="fa fa-eye"></i>
+                      ) : (
+                        <i className="fa fa-eye-slash"></i>
+                      )}
+                    </Button>
                   </div>
                 </div>
-              </div>
-              <div className="form-group">
-                {/* <label htmlFor="confirmPassword">Confirm New Password</label> */}
-                {/* <input type={inputTypeConfirmPassword} id="confirmPassword" name="confirmPassword" className="form-control" value={confirmPassword} onChange={handleConfirmPassword} />
-                <button className="btn btn-outline-secondary" onClick={() => setInputTypeConfirmPassword(inputTypeConfirmPassword === 'password' ? 'text' : 'password')}>{inputTypeConfirmPassword === 'password' ? 'Show' : 'Hide'}</button> */}
-                <div className="form-group">           
-                {/* <input type={inputType} id="password" name="password" className="form-control" value={password} onChange={handlePassword} />
-                <button className="btn btn-outline-secondary" onClick={() => setInputType(inputType === 'password' ? 'text' : 'password')}>{inputType === 'password' ? 'Show' : 'Hide'}</button> */}
-                <div className="form-group">
-                  <label htmlFor="confirmPassword" style={{ color: "#143157" }}>Confirm New Password</label>
-                  <div className="input-group">
-                    <input 
-                      type={inputTypeConfirmPassword} 
-                      id="confirmPassword" 
-                      name="confirmPassword" 
-                      className="form-control" 
-                      value={confirmPassword} 
-                      onChange={handleConfirmPassword} 
-                      required 
-                    />
-                    <div className="input-group-append">
-                      <button 
-                        type="button" 
-                        className="btn" 
-                        style={{ backgroundColor: "#ff6600", color: "#fff" }}
-                        onClick={toggleConfirmPasswordVisibility}
-                      >
-                        {inputTypeConfirmPassword === 'password' ? 
-                          <i className="fa fa-eye"></i> : 
-                          <i className="fa fa-eye-slash"></i>}
-                      </button>
-                    </div>
+              </Form.Group>
+            </Col>
+          
+            <Col md={6}>
+              <Form.Group controlId="confirmPassword">
+                <Form.Label style={{ color: "#143157" }}>Confirm New Password</Form.Label>                
+                <div className="input-group">
+                  <Form.Control
+                    type={inputTypeConfirmPassword}
+                    value={confirmPassword}
+                    onChange={handleConfirmPassword}
+                    required
+                  />
+                  <div className="input-group-append">
+                    <Button
+                      type="button"
+                      className = "eye-button" 
+                      onClick={toggleConfirmPasswordVisibility}
+                    >
+                      {inputTypeConfirmPassword === 'password' ? (
+                        <i className="fa fa-eye"></i>
+                      ) : (
+                        <i className="fa fa-eye-slash"></i>
+                      )}
+                    </Button>
                   </div>
                 </div>
-              </div>
-              </div>              
+              </Form.Group>
+            </Col>
+          </Row>
+
+          <Row>
+            <Col className="text-center mt-3">
+              <Button variant="warning" onClick={handleUpdatePassword}>
+                Update Password
+              </Button>
+            </Col>
+          </Row>
+        </Container>
+
+        <Container className="mt-5 mb-5">
+          <Row>
+            <Col md={12} className="mb-4">
+              <h4>Delete Account</h4>
+              <p>Once you delete your account, there is no going back, please be certain.</p>
               <div className="text-center mt-3">
-                <button className="btn btn-warning" onClick={handleUpdatePassword}>Update Password</button>
-                </div>
-            </div>
-          </div>
-        </div>
-        <div className="container">
-          <div className="row">                  
-              <div className="mb-4">
-                <h4>Delete Account</h4>
-                <p>Once you delete your account, there is no going back, please be certain.</p>
-                <div className="text-center mt-3">
-                  <Link to="/delete-account" className="btn btn-danger">
+                {/* Link para exclusão de conta */}
+                <Link to="/delete-account" className="btn btn-danger">
                   Delete Account
-                  </Link>   
-                </div>       
+                </Link>
               </div>
-            </div>
-          </div> 
+            </Col>
+          </Row>
+        </Container>
+
       </Container>
     );
   }

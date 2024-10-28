@@ -17,8 +17,7 @@ export async function createUser(emailAddress, password, confirmPassword, name, 
     } catch (error) {
         throw error;
     }
-}
-   
+}   
 
 ///////////////////////////////////// Delete User ////////////////////////////////////
 export async function deleteUser() {
@@ -85,17 +84,20 @@ export async function updateUser(name, nickname) {
 
     localStorage.setItem("name", name);
     localStorage.setItem("nickname", nickname);    
-    alert('Usuário atualizado com sucesso!');
-    return response.data.message;       
+    
+    return "User updated successfully!";     
+      
 
     } catch (error) {
         if (error.response) {
         // Erro na resposta da API
-        console.error("Erro na requisição:", error.response.data);
+        console.error("Error on the request:", error.response.data);
+        
         } else {
         // Erro desconhecido
-        console.error("Erro desconhecido:", error.message);
+        console.error("Uknown ErrorUnknow error! Please contact the support team.", error.message);
+        
         }
-        alert('Erro ao atualizar o usuário.');
+        return error;
     }
 }   

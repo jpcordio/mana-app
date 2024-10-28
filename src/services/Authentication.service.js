@@ -160,22 +160,8 @@ export async function updatePassword(currentPassword, newPassword, confirmPasswo
     const newClient = response.headers['client'];
     localStorage.setItem("client", newClient);
 
-    //return response.data.status;
 
-  } catch (error) {
-    if (error.response) {
-      // Erro na resposta da API
-      //console.error("Erro na requisição:", error.response.data);
-      console.error("Erro na requisição detalhes:", error.response.data.errors.full_messages[0]);
-      
-      return error.response.data.errors.full_messages[0];
-
-    } else {
-      // Erro desconhecido
-      
-      console.error("Erro desconhecido:", error.message);
-    }
-    
+  } catch (error) {    
     throw error;
   }
 }
