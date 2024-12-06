@@ -12,9 +12,9 @@ function Logout(props) {
 
     } catch (error) {
       if (error.response) {
-        console.error("Erro na requisição:", error.response.data);
+        console.error("Error on the request:", error.response.data);
       } else {
-        console.error("Erro desconhecido:", error.message);
+        console.error("Unknown Error:", error.message);
       }
       alert(error.response.data.errors[0]);
     }  

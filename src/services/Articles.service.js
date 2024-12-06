@@ -1,4 +1,7 @@
 import axios from "axios";
+import { getApiUrl } from "./Authentication.service"; 
+
+const API_URL = getApiUrl();
 
 ///////////////////////////////////// Create Article Article ////////////////////////////////////
 export async function createArticle(title, body, imageUrl) {
@@ -6,10 +9,11 @@ export async function createArticle(title, body, imageUrl) {
     
     const accessToken = localStorage.getItem("accessToken");
     const client = localStorage.getItem("client");
-    const uid = localStorage.getItem("uid");
+    const uid = localStorage.getItem("uid"); 
+
 
     try {
-        const response = await axios.post('http://localhost:3000/api/articles', {
+        const response = await axios.post(`${API_URL}/articles`, {
             title: title,
             body: body,
             image: imageUrl
@@ -43,7 +47,7 @@ export async function updateArticle(articleId, title, body, imageUrl) {
     const uid = localStorage.getItem("uid");
 
     try {
-        const response = await axios.put(`http://localhost:3000/api/articles/${articleId}`, {
+        const response = await axios.put(`${API_URL}/articles/${articleId}`, {
         title: title,
         body: body,
         image: imageUrl
@@ -77,7 +81,7 @@ export async function deleteArticle(articleId) {
 
     try {
         
-        const response = await axios.delete(`http://localhost:3000/api/articles/${articleId}`, {
+        const response = await axios.delete(`${API_URL}/articles/${articleId}`, {
             headers: {
                 'access-token': accessToken,
                 uid: uid,
@@ -106,7 +110,7 @@ export async function deleteArticle(articleId) {
 export async function fetchArticles() {
 
     try {
-        const response = await axios.get('http://localhost:3000/api/articles');
+        const response = await axios.get(`${API_URL}/articles`);
         return response.data;
     } catch (error) {
         console.error("Erro ao buscar artigos:", error);
@@ -123,7 +127,7 @@ export async function fetchArticleId(articleId) {
 
     try {
         
-        const response = await axios.get(`http://localhost:3000/api/articles/${articleId}`,
+        const response = await axios.get(`${API_URL}/articles/${articleId}`,
         {
             headers: {
             'access-token': accessToken,
@@ -150,7 +154,7 @@ export async function fetchArticleFeed() {
 
     try {
         
-        const response = await axios.get(`http://localhost:3000/api/articles/followed`,
+        const response = await axios.get(`${API_URL}/articles/followed`,
         {
             headers: {
             'access-token': accessToken,

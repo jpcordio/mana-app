@@ -1,5 +1,13 @@
 import axios from "axios";
 
+export function getApiUrl() { 
+  const API_URL = 'http://localhost:3000/api'; //Local Host
+  //const API_URL = 'http://100.29.78.192:3000/api'; // URL do AWS
+  return API_URL;
+}
+
+const API_URL = getApiUrl();
+
 //////////////////////////////////// Handles the Log In ////////////////////////////////////
 export async function login(emailAddress, password) {
 
@@ -48,7 +56,7 @@ export async function logout() {
   const uid = localStorage.getItem("uid");
 
   try {
-    const response = await axios.delete('http://localhost:3000/api/auth/sign_out', {
+    const response = await axios.delete(`${API_URL}/auth/sign_out`, {
       headers: {
         'access-token': accessToken,
         uid: uid,
@@ -89,7 +97,7 @@ export async function checkValidate() {
   const uid = localStorage.getItem("uid");
 
   try {
-    const response = await axios.get('http://localhost:3000/api/auth/validate_token', {
+    const response = await axios.get(`${API_URL}/auth/validate_token`, {
       params: {
         'access-token': accessToken,
         uid: uid,
@@ -138,7 +146,7 @@ export async function updatePassword(currentPassword, newPassword, confirmPasswo
 
   try {
     // Enviar a requisição de atualização (PUT)
-    const response = await axios.put('http://localhost:3000/api/auth', {
+    const response = await axios.put(`${API_URL}/auth`, {
       current_password: currentPassword,
       password: newPassword,
       password_confirmation: confirmPassword
@@ -182,7 +190,7 @@ export async function forgetPassword(emailAddress) {
   const uid = emailAddress;
 
   try {
-      const response = await axios.post('http://localhost:3000/api/auth/password', {
+      const response = await axios.post(`${API_URL}/api/auth/password`, {
         email: uid
       });
     
@@ -212,7 +220,7 @@ export async function resetPassword(password, confirmPassword, accessToken, uid,
   
   try {
     // Enviar a requisição de atualização (PUT)
-    const response = await axios.put('http://localhost:3000/api/auth/password', {
+    const response = await axios.put(`${API_URL}/api/auth/password`, {
         password: password, 
       	password_confirmation: confirmPassword 
     }, {
