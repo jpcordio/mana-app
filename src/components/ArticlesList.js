@@ -3,7 +3,9 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
 import Articles from "./Articles";
-import { isLogged, isCompany } from "../services/Authentication.service";
+import { isLogged, isCompany, getApiUrl } from "../services/Authentication.service";
+
+const API_URL = getApiUrl();
 
 function ArticleList({ user_Id }) {
 
@@ -81,7 +83,7 @@ function ArticleList({ user_Id }) {
       const idToFetch = user_Id || userId;
 
       try {
-        const response = await axios.get(`http://localhost:3000/api/articles/user/${idToFetch}`,
+        const response = await axios.get(`${API_URL}/api/articles/user/${idToFetch}`,
             {
                 headers: {
                 'access-token': accessToken,

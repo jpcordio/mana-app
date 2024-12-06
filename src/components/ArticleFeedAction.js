@@ -4,6 +4,10 @@ import Articles from "./Articles";
 import { isLogged } from "../services/Authentication.service";
 import { fetchArticleFeed } from "../services/Articles.service";
 import { Link } from "react-router-dom";
+import { getApiUrl, getAppUrl } from "../services/Authentication.service"; 
+
+const API_URL = getApiUrl();
+const APP_URL = getAppUrl();
 
 function ArticleFeedAction({ user_Id }) {
   const [articles, setArticles] = useState([]);
@@ -86,7 +90,7 @@ function ArticleFeedAction({ user_Id }) {
                     <h5 className="card-title">{article.title}</h5>
                     <p className="card-text">{article.body}</p>
                     {/* <small className="text-muted">Author ID: {article.user.id}</small> */}
-                    <small className="text-muted">Author: <a href={`http://localhost:3001/profile?id=${article.user.id}&name=${article.user.name}`}>{article.user.name}</a></small>
+                    <small className="text-muted">Author: <a href={`${APP_URL}/profile?id=${article.user.id}&name=${article.user.name}`}>{article.user.name}</a></small>
                   </div>
                 </div>
               </li>

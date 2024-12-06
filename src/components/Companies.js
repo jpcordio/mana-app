@@ -1,6 +1,10 @@
 import { useState, useEffect } from "react";
 import { isFollowing, setFollow, setUnfollow } from "../services/Connection.service";
 import { Button, OverlayTrigger, Tooltip } from 'react-bootstrap';
+import { getApiUrl, getAppUrl } from "../services/Authentication.service"; 
+
+const API_URL = getApiUrl();
+const APP_URL = getAppUrl();
 
 function Companies(props) {
   const [isFollowed, setIsFollowed] = useState(false);
@@ -40,7 +44,7 @@ function Companies(props) {
           </Tooltip>
         }
       >
-        <a href={`http://localhost:3001/profile?id=${props.id}&name=${props.name}`} className="text-decoration-none text-dark">
+        <a href={`${APP_URL}/profile?id=${props.id}&name=${props.name}`} className="text-decoration-none text-dark">
           {props.name}
         </a>
       </OverlayTrigger>

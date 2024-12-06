@@ -2,8 +2,14 @@ import axios from "axios";
 
 export function getApiUrl() { 
   const API_URL = 'http://localhost:3000/api'; //Local Host
-  //const API_URL = 'http://100.29.78.192:3000/api'; // URL do AWS
+  //const API_URL = 'http://100.29.78.192:3000/api'; // URL AWS
   return API_URL;
+}
+
+export function getAppUrl() { 
+  const APP_URL = 'http://localhost:3001'; //Local Host
+  //const APP_URL = 'http://54.157.195.143:3000'; // URL AWS
+  return APP_URL;
 }
 
 const API_URL = getApiUrl();

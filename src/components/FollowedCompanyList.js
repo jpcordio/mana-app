@@ -1,9 +1,11 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
 import Companies from "./Companies"; // Importação correta
-import { isLogged } from "../services/Authentication.service";
+import { isLogged, getApiUrl } from "../services/Authentication.service";
 import { Spinner, Container, Row, Col, ListGroup, Alert } from "react-bootstrap";
 import { Link } from "react-router-dom";
+
+const API_URL = getApiUrl();
 
 function FollowedCompanyList({ user_Id }) {
   const [companies, setCompanies] = useState([]);
@@ -23,7 +25,7 @@ function FollowedCompanyList({ user_Id }) {
   useEffect(() => {
     async function fetchCompanies() {
       try {
-        const response = await axios.get(`http://localhost:3000/api/users/followed_companies`, {
+        const response = await axios.get(`${API_URL}//api/users/followed_companies`, {
           headers: {
             "access-token": accessToken,
             uid: uid,

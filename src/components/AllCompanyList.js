@@ -4,6 +4,10 @@ import Companies from "./Companies"; // Importação correta
 import { isLogged } from "../services/Authentication.service";
 import { ListGroup, Container, Row, Col } from 'react-bootstrap';
 import { Link } from "react-router-dom";
+import { getApiUrl } from "../services/Authentication.service"; 
+
+const API_URL = getApiUrl();
+
 
 function AllCompanyList({ user_Id }) {
   const [companies, setCompanies] = useState([]);
@@ -23,7 +27,7 @@ function AllCompanyList({ user_Id }) {
   useEffect(() => {
     async function fetchCompanies() {
       try {
-        const response = await axios.get(`http://localhost:3000/api/all_companies`, {
+        const response = await axios.get(`${API_URL}/all_companies`, {
           headers: {
             "access-token": accessToken,
             uid: uid,
@@ -46,7 +50,7 @@ function AllCompanyList({ user_Id }) {
   }, [user_Id]);
 
   if (loading) {
-    return <p>Carregando...</p>;
+    return <p>Loading...</p>;
   }
 
   if (error) {
