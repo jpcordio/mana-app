@@ -1,6 +1,7 @@
 import axios from "axios";
+import { getApiUrl } from "./Authentication.service"; 
 
-const API_URL = 'http://localhost:3000/api';
+const API_URL = getApiUrl();
 
 ///////////////////////////////////// Create Company Profile ////////////////////////////////////
 export async function createProfile(id, address1, address2, city, county, postcode, country, phone, mobile, website, email) {

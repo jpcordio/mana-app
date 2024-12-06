@@ -1,7 +1,7 @@
 import axios from 'axios';
+import { getApiUrl } from "./Authentication.service"; 
 
-
-const API_URL = 'http://localhost:3000/api';
+const API_URL = getApiUrl();
 
 
 ///////////////////////////////////// Check is logged (locally) ////////////////////////////////////

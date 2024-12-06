@@ -1,10 +1,13 @@
 import axios from "axios";
+import { getApiUrl } from "./Authentication.service"; 
+
+const API_URL = getApiUrl();
 
 ///////////////////////////////////// Handles the re-send email verification ////////////////////////////////////
 export async function resendVerificationEmail(emailAddress) {
 
     try {
-        const response = await axios.post('http://localhost:3000/api/auth/confirmation', {
+        const response = await axios.post(`${API_URL}/auth/confirmation`, {
         email: emailAddress
         });
         

@@ -1,10 +1,13 @@
 import axios from "axios";
+import { getApiUrl } from "./Authentication.service"; 
+
+const API_URL = getApiUrl();
 
 ///////////////////////////////////// Registration of a new user ////////////////////////////////////
 export async function createUser(emailAddress, password, confirmPassword, name, typeRegistration) {
 
     try {
-        const response = await axios.post('http://localhost:3000/api/auth', {
+        const response = await axios.post(`${API_URL}/auth`, {
         email: emailAddress,
         password: password,
         password_confirmation: confirmPassword,
@@ -28,7 +31,7 @@ export async function deleteUser() {
 
     try {
         
-        const response = await axios.delete('http://localhost:3000/api/auth', {
+        const response = await axios.delete(`${API_URL}/auth`, {
         params: {
             'access-token': accessToken,
             uid: uid,
@@ -71,7 +74,7 @@ export async function updateUser(name, nickname) {
 
     try {
         // Enviar a requisição de atualização (PUT)
-        const response = await axios.put('http://localhost:3000/api/auth', {
+        const response = await axios.put(`${API_URL}/auth`, {
         name: name,
         nickname: nickname
         },{
