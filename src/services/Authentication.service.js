@@ -7,7 +7,7 @@ export function getApiUrl() {
 }
 
 export function getAppUrl() { 
-  //const APP_URL = 'http://localhost:3001'; //Local Host
+  // const APP_URL = 'http://localhost:3001'; //Local Host
   const APP_URL = 'http://54.157.195.143:3000'; // URL AWS
   return APP_URL;
 }
@@ -18,7 +18,7 @@ const API_URL = getApiUrl();
 export async function login(emailAddress, password) {
 
   try {
-    const response = await axios.post('http://localhost:3000/api/auth/sign_in', {
+    const response = await axios.post(`${API_URL}/auth/sign_in`, {
     email: emailAddress,
     password: password
   });
