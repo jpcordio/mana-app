@@ -25,7 +25,7 @@ function FollowedCompanyList({ user_Id }) {
   useEffect(() => {
     async function fetchCompanies() {
       try {
-        const response = await axios.get(`${API_URL}//api/users/followed_companies`, {
+        const response = await axios.get(`${API_URL}/users/followed_companies`, {
           headers: {
             "access-token": accessToken,
             uid: uid,
