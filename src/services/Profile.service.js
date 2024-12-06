@@ -31,15 +31,15 @@ export async function createProfile(id, address1, address2, city, county, postco
       }
     });
 
-    // Acessar os headers da resposta, que podem conter novos tokens
-    const headers = response.headers;
-    console.log("Headers:", headers); 
+    // // Acessar os headers da resposta, que podem conter novos tokens
+    // const headers = response.headers;
+    // console.log("Headers:", headers); 
 
-    const newAccessToken = response.headers['access-token'];
-    localStorage.setItem("accessToken", newAccessToken);
+    // const newAccessToken = response.headers['access-token'];
+    // localStorage.setItem("accessToken", newAccessToken);
     
-    const newClient = response.headers['client'];
-    localStorage.setItem("client", newClient);
+    // const newClient = response.headers['client'];
+    // localStorage.setItem("client", newClient);
 
     return true;
 
@@ -122,15 +122,15 @@ export async function updateProfile(id, address1, address2, city, county, postco
       }
     });
 
-    // Acessar os headers da resposta, que podem conter novos tokens
-    const headers = response.headers;
-    console.log("Headers:", headers); 
+    // // Acessar os headers da resposta, que podem conter novos tokens
+    // const headers = response.headers;
+    // console.log("Headers:", headers); 
 
-    const newAccessToken = response.headers['access-token'];
-    localStorage.setItem("accessToken", newAccessToken);
+    // const newAccessToken = response.headers['access-token'];
+    // localStorage.setItem("accessToken", newAccessToken);
     
-    const newClient = response.headers['client'];
-    localStorage.setItem("client", newClient);
+    // const newClient = response.headers['client'];
+    // localStorage.setItem("client", newClient);
 
 
   } catch (error) {
