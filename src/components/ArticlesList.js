@@ -83,7 +83,7 @@ function ArticleList({ user_Id }) {
       const idToFetch = user_Id || userId;
 
       try {
-        const response = await axios.get(`${API_URL}/api/articles/user/${idToFetch}`,
+        const response = await axios.get(`${API_URL}/articles/user/${idToFetch}`,
             {
                 headers: {
                 'access-token': accessToken,
